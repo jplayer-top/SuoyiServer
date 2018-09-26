@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_85dp">
+
+    <ImageView
+        android:id="@+id/ivHeaderAvatar"
+        android:layout_width="@dimen/dimen_35dp"
+        android:layout_height="@dimen/dimen_35dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:layout_width="@dimen/dimen_20dp"
+        android:layout_height="@dimen/dimen_10dp"
+        android:src="@drawable/main_expand"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHeaderName"
+        app:layout_constraintStart_toEndOf="@+id/tvHeaderNum"
+        app:layout_constraintTop_toTopOf="@+id/tvHeaderName"/>
+
+    <TextView
+        android:id="@+id/tvHeaderNum"
+        android:layout_width="@dimen/dimen_15dp"
+        android:layout_height="@dimen/dimen_15dp"
+        android:layout_marginStart="@dimen/dimen_5dp"
+        android:background="@drawable/main_num"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_6sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHeaderName"
+        app:layout_constraintStart_toEndOf="@+id/tvHeaderName"
+        app:layout_constraintTop_toTopOf="@+id/tvHeaderName"/>
+
+    <TextView
+        android:id="@+id/tvHeaderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:text="所依家"
+        android:textSize="@dimen/dimen_15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ivHeaderAvatar"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvHeaderTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:text="00:00"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/dimen_11sp"
+        app:layout_constraintStart_toEndOf="@+id/ivHeaderAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeaderName"/>
+
+    <TextView
+        android:id="@+id/tvHeaderTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:text="备注"
+        android:textColor="@color/color999"
+        android:textSize="@dimen/dimen_13sp"
+        app:layout_constraintStart_toEndOf="@+id/ivHeaderAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeaderTime"/>
+
+    <TextView
+        android:id="@+id/tvHeaderNowTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:text="00:00"
+        android:textColor="@color/color999"
+        android:textSize="@dimen/dimen_11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivHeaderCall"
+        app:layout_constraintEnd_toStartOf="@+id/ivHeaderCall"
+        app:layout_constraintTop_toTopOf="@+id/ivHeaderCall"/>
+
+    <ImageView
+        android:id="@+id/ivHeaderCall"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:layout_margin="@dimen/dimen_3dp"
+        android:padding="@dimen/dimen_12dp"
+        android:src="@drawable/main_call"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivHeaderEdit"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:layout_margin="@dimen/dimen_3dp"
+        android:padding="@dimen/dimen_12dp"
+        android:src="@drawable/main_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</android.support.constraint.ConstraintLayout>
