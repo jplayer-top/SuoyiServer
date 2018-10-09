@@ -5,19 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_85dp">
 
-    <ImageView
+    <top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView
         android:id="@+id/ivHeaderAvatar"
         android:layout_width="@dimen/dimen_35dp"
         android:layout_height="@dimen/dimen_35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/main_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:poly_vertices="0"/>
 
     <ImageView
+        android:id="@+id/ivExpand"
         android:layout_width="@dimen/dimen_20dp"
         android:layout_height="@dimen/dimen_10dp"
         android:src="@drawable/main_expand"
@@ -69,6 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:lines="1"
         android:text="备注"
         android:textColor="@color/color999"
         android:textSize="@dimen/dimen_13sp"

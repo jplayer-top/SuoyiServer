@@ -9,6 +9,11 @@ import android.widget.EditText;
 
 import com.ilanchuang.xiaoi.suoyiserver.MainActivity;
 import com.ilanchuang.xiaoi.suoyiserver.R;
+import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.LoginPresenter;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +39,7 @@ public class LoginActivity extends SuperBaseActivity implements TextWatcher {
     @BindView(R.id.btnLogin)
     Button mBtnLogin;
     private Unbinder mBind;
+    private LoginPresenter mPresenter;
 
     @Override
     protected int initRootLayout() {
@@ -45,6 +51,7 @@ public class LoginActivity extends SuperBaseActivity implements TextWatcher {
         super.initRootData(view);
         mBind = ButterKnife.bind(this);
         mEdName.addTextChangedListener(this);
+        mPresenter = new LoginPresenter(this);
         mEdPassword.addTextChangedListener(this);
         mBtnLogin.setOnClickListener(v -> {
             if (StringUtils.init().isEmpty(mEdName)) {
@@ -55,7 +62,7 @@ public class LoginActivity extends SuperBaseActivity implements TextWatcher {
                 ToastUtils.init().showQuickToast(this, "请输入密码");
                 return;
             }
-            ActivityUtils.init().start(this, MainActivity.class);
+            mPresenter.login(mEdName.getText().toString(), mEdPassword.getText().toString());
         });
     }
 
@@ -89,5 +96,14 @@ public class LoginActivity extends SuperBaseActivity implements TextWatcher {
         } else {
             mBtnLogin.setEnabled(false);
         }
+    }
+
+
+    public void loginGetUserInfo(UserInfoBean userInfoBean) {
+        SYSApplication.name = userInfoBean.name;
+        SYSApplication.type = String.format(Locale.CHINA, "账号类型：%s", userInfoBean.type);
+        SYSApplication.avatar = userInfoBean.avator;
+        ActivityUtils.init().start(this, MainActivity.class);
+        finish();
     }
 }

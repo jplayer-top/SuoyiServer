@@ -1,17 +1,20 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean;
 
+import com.chad.library.adapter.base.entity.AbstractExpandableItem;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.util.List;
 
 import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 
 /**
- * Created by Obl on 2018/9/21.
+ * Created by Obl on 2018/10/9.
  * com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean
  * call me : jplayer_top@163.com
  * github : https://github.com/oblivion0001
  */
 
-public class TodayInBean extends BaseBean {
+public class InListBean extends BaseBean {
 
     /**
      * total : 1
@@ -21,7 +24,10 @@ public class TodayInBean extends BaseBean {
     public int total;
     public List<ListBean> list;
 
-    public static class ListBean {
+    public static final int LEVEL_0 = 0;
+    public static final int LEVEL_1 = 1;
+
+    public static class ListBean extends AbstractExpandableItem<ListBean.NotesBean> implements MultiItemEntity {
         /**
          * fid : 10002
          * fname : 小椅太阳系
@@ -38,7 +44,17 @@ public class TodayInBean extends BaseBean {
         public int noteNum;
         public List<NotesBean> notes;
 
-        public static class NotesBean {
+        @Override
+        public int getLevel() {
+            return LEVEL_0;
+        }
+
+        @Override
+        public int getItemType() {
+            return LEVEL_0;
+        }
+
+        public static class NotesBean implements MultiItemEntity {
             /**
              * id : 4
              * family_id : 10002
@@ -52,6 +68,11 @@ public class TodayInBean extends BaseBean {
             public String note;
             public int cuid;
             public String ct;
+
+            @Override
+            public int getItemType() {
+                return LEVEL_1;
+            }
         }
     }
 }

@@ -4,10 +4,8 @@ import android.view.View;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.ilanchuang.xiaoi.suoyiserver.R;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayInBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayOutBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserListBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.iview.ContructIview;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.CommonPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
 
 import java.util.ArrayList;
@@ -23,9 +21,11 @@ import top.jplayer.baseprolibrary.ui.fragment.SuperBaseFragment;
  * github : https://github.com/oblivion0001
  */
 
-public class TodayInFragment extends SuperBaseFragment implements ContructIview.MainIview {
+public class TodayInFragment extends SuperBaseFragment {
 
     private TodayInAdapter mAdapter;
+    List<MultiItemEntity> mEntityList;
+    private CommonPresenter mPresenter;
 
     @Override
     public int initLayout() {
@@ -37,28 +37,38 @@ public class TodayInFragment extends SuperBaseFragment implements ContructIview.
         initRefreshStatusView(rootView);
         mAdapter = new TodayInAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
-    }
+        mPresenter = new CommonPresenter(this);
+        showLoading();
+        mPresenter.requestInList("1", null, null);
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId() == R.id.ivHeaderEdit) {
 
-    @Override
-    public void todayIn(TodayInBean bean) {
-        mAdapter.setNewData(null);
-    }
-
-    @Override
-    public void todayOut(TodayOutBean bean) {
-
-    }
-
-    @Override
-    public void userList(UserListBean bean) {
-
-    }
-
-    private ArrayList<MultiItemEntity> generateData(List<TodayInBean.RecordsBean> beans) {
-        ArrayList<MultiItemEntity> res = new ArrayList<>();
-        Observable.fromIterable(beans).subscribe(resultBeans -> {
-            res.add(resultBeans);
+            }
+            return false;
         });
-        return res;
+    }
+
+    @Override
+    public void refreshStart() {
+        mPresenter.requestInList("1", null, null);
+    }
+
+    public void responseInList(InListBean bean) {
+        responseSuccess();
+        generateData(bean.list);
+        mAdapter.setNewData(mEntityList);
+    }
+
+    private void generateData(List<InListBean.ListBean> listBeans) {
+        if (mEntityList != null) {
+            mEntityList.clear();
+        } else {
+            mEntityList = new ArrayList<>();
+        }
+        Observable.fromIterable(listBeans).subscribe(listBean -> {
+            mEntityList.add(listBean);
+            Observable.fromIterable(listBean.notes).subscribe(listBean::addSubItem);
+            listBean.removeSubItem(0);
+        });
     }
 }

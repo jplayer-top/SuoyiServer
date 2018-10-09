@@ -12,6 +12,12 @@ import top.jplayer.baseprolibrary.BaseInitApplication;
  */
 
 public class SYSApplication extends MultiDexApplication {
+    public static String imToken = "";
+    public static String uid = "";
+    public static String avatar = "";
+    public static String name = "";
+    public static String type = "";
+
     @Override
     public void onCreate() {
         super.onCreate();

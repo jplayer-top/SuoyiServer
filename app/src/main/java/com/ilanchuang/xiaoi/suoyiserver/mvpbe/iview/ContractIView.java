@@ -2,6 +2,7 @@ package com.ilanchuang.xiaoi.suoyiserver.mvpbe.iview;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayInBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayOutBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserListBean;
 
 import top.jplayer.baseprolibrary.mvp.contract.IContract;
@@ -13,12 +14,17 @@ import top.jplayer.baseprolibrary.mvp.contract.IContract;
  * github : https://github.com/oblivion0001
  */
 
-public interface ContructIview {
-    interface MainIview extends IContract.IView {
+public interface ContractIView {
+    interface MainIView extends IContract.IView {
         void todayIn(TodayInBean bean);
 
         void todayOut(TodayOutBean bean);
 
         void userList(UserListBean bean);
+
+    }
+
+    interface UserIView extends IContract.IView {
+        void loginGetUserInfo(UserInfoBean userInfoBean);
     }
 }

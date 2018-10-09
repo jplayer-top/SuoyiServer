@@ -12,7 +12,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:id="@+id/tvToolTitle"
@@ -28,6 +30,60 @@
             android:textColor="@color/colorBlackGold"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="?actionBarSize"
+            android:layout_marginStart="?actionBarSize"
+            android:background="@drawable/shape_b4d691_radius45">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_15dp"
+                android:layout_height="@dimen/dimen_15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:src="@drawable/search"/>
+
+            <EditText
+                android:textSelectHandle="@color/white"
+                android:id="@+id/editSearch"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_26dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dimen_15dp"
+                android:layout_marginStart="@dimen/dimen_5dp"
+                android:background="@null"
+                android:hint="搜索家庭组"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textCursorDrawable="@drawable/shape_cursor_white"
+                android:textSize="@dimen/dimen_12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="end"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_3dp"
+                android:text="在线"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_13sp"/>
+
+            <ImageView
+
+                android:layout_width="@dimen/dimen_10dp"
+                android:layout_height="@dimen/dimen_6dp"
+                android:src="@drawable/main_online_arrow"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
