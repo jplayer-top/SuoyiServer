@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.MainPresenter;
+import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayInFragment;
+import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayOutFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +27,6 @@ import butterknife.Unbinder;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
 import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.ui.adapter.BaseViewPagerFragmentAdapter;
-import top.jplayer.baseprolibrary.ui.fragment.TestFragment;
 import top.jplayer.baseprolibrary.utils.KeyboardUtils;
 import top.jplayer.baseprolibrary.utils.ToastUtils;
 import top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView;
@@ -123,15 +124,9 @@ public class MainActivity extends SuperBaseActivity {
     public void responseTypeNum(TypeNumBean bean) {
         ArrayMap<String, Fragment> map = new ArrayMap<>();
         map.put("今日呼入(" + bean.in + ")", new TodayInFragment());
-        map.put("今日呼出(" + bean.out + ")", new TestFragment());
-        map.put("用户列表(" + bean.linkman + ")", new TestFragment());
+        map.put("今日呼出(" + bean.out + ")", new TodayOutFragment());
+        map.put("用户列表(" + bean.linkman + ")", new LinkListFragment());
         mViewPager.setAdapter(new BaseViewPagerFragmentAdapter<>(getSupportFragmentManager(), map));
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                ToastUtils.init().showQuickToast("当前位置：" + position);
-            }
-        });
     }
 }

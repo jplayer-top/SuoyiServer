@@ -6,7 +6,9 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayInFragment;
 
 import top.jplayer.baseprolibrary.mvp.contract.BasePresenter;
+import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
+import top.jplayer.baseprolibrary.net.tip.PostImplTip;
 
 /**
  * Created by Obl on 2018/10/9.
@@ -15,11 +17,11 @@ import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
  * github : https://github.com/oblivion0001
  */
 
-public class CommonPresenter extends BasePresenter<TodayInFragment> {
+public class TodayInPresenter extends BasePresenter<TodayInFragment> {
 
     private final ServerModel mModel;
 
-    public CommonPresenter(TodayInFragment iView) {
+    public TodayInPresenter(TodayInFragment iView) {
         super(iView);
         mModel = new ServerModel(SYServer.class);
     }
@@ -33,6 +35,20 @@ public class CommonPresenter extends BasePresenter<TodayInFragment> {
 
             @Override
             public void responseFail(InListBean inListBean) {
+
+            }
+        });
+    }
+
+    public void requestNote(String fid,String note) {
+        mModel.requestNote(fid, note).subscribe(new NetCallBackObserver<BaseBean>(new PostImplTip(mIView.mActivity)) {
+            @Override
+            public void responseSuccess(BaseBean bean) {
+                mIView.responseNote(bean);
+            }
+
+            @Override
+            public void responseFail(BaseBean inListBean) {
 
             }
         });

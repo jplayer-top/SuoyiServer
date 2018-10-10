@@ -57,7 +57,7 @@ public abstract class BaseCustomDialog extends AlertDialog {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         lp.dimAmount = setAlpha();
-        lp.width = setWidth(7);
+        lp.width = setWidth(8);
         lp.height = setHeight();
         window.setGravity(setGravity());
         window.setWindowAnimations(setAnim());

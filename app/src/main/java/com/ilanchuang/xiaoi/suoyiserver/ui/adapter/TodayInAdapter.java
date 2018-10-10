@@ -50,7 +50,7 @@ public class TodayInAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                         .into(ivHeaderAvatar);
                 boolean hasNotes = listBean.notes != null && listBean.notes.size() > 0;
                 holder.setText(R.id.tvHeaderName, listBean.fname)
-                        .setText(R.id.tvHeaderNum, listBean.noteNum + "")
+                        .setText(R.id.tvHeaderNum, listBean.notenum + "")
                         .setText(R.id.tvHeaderNowTime, listBean.date)
                         .setVisible(R.id.tvHeaderTime, hasNotes)
                         .setVisible(R.id.tvHeaderNum, hasNotes)

@@ -6,7 +6,7 @@ import android.widget.EditText;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.ilanchuang.xiaoi.suoyiserver.R;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.TodayInPresenter;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.TodayOutPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogNote;
 
@@ -24,11 +24,11 @@ import top.jplayer.baseprolibrary.ui.fragment.SuperBaseFragment;
  * github : https://github.com/oblivion0001
  */
 
-public class TodayInFragment extends SuperBaseFragment {
+public class TodayOutFragment extends SuperBaseFragment {
 
     private TodayInAdapter mAdapter;
     List<MultiItemEntity> mEntityList;
-    private TodayInPresenter mPresenter;
+    private TodayOutPresenter mPresenter;
     private DialogNote mDialogNote;
 
     @Override
@@ -41,9 +41,9 @@ public class TodayInFragment extends SuperBaseFragment {
         initRefreshStatusView(rootView);
         mAdapter = new TodayInAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
-        mPresenter = new TodayInPresenter(this);
+        mPresenter = new TodayOutPresenter(this);
         showLoading();
-        mPresenter.requestInList("1", null, null);
+        mPresenter.requestOutList("1", null, null);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             if (view.getId() == R.id.ivHeaderEdit) {
                 InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
@@ -60,14 +60,9 @@ public class TodayInFragment extends SuperBaseFragment {
 
     @Override
     public void refreshStart() {
-        mPresenter.requestInList("1", null, null);
+        mPresenter.requestOutList("1", null, null);
     }
 
-    public void responseInList(InListBean bean) {
-        responseSuccess();
-        generateData(bean.list);
-        mAdapter.setNewData(mEntityList);
-    }
 
     private void generateData(List<InListBean.ListBean> listBeans) {
         if (mEntityList != null) {
@@ -83,6 +78,12 @@ public class TodayInFragment extends SuperBaseFragment {
     }
 
     public void responseNote(BaseBean bean) {
-        mPresenter.requestInList("1", null, null);
+        mPresenter.requestOutList("1", null, null);
+    }
+
+    public void responseOutList(InListBean bean) {
+        responseSuccess();
+        generateData(bean.list);
+        mAdapter.setNewData(mEntityList);
     }
 }

@@ -2,7 +2,6 @@ package com.ilanchuang.xiaoi.suoyiserver.mvpbe;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LinkListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayInBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
@@ -35,8 +34,8 @@ public interface SYServer {
     @POST("serv/call/outlist?")
     Observable<InListBean> requestOutList(@Query("flag") String flag, @Query("fname") String fname, @Query("date") String date);
 
-    @POST("serv/call/outlist?")
-    Observable<LinkListBean> requestLinkList(@Query("pageNumber") String pageNumber, @Query("fname") String fname);
+    @POST("serv/call/linkman?")
+    Observable<InListBean> requestLinkList(@Query("pageNumber") String pageNumber, @Query("fname") String fname);
 
     @POST("serv/call/savenote?")
     Observable<BaseBean> requestSaveNode(@Query("fid") String fid, @Query("note") String note);

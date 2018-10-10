@@ -8,6 +8,7 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
 
 import io.reactivex.Observable;
 import top.jplayer.baseprolibrary.mvp.model.BaseModel;
+import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 
 /**
@@ -32,6 +33,18 @@ public class ServerModel extends BaseModel<SYServer> {
 
     public Observable<InListBean> requestInList(String flag, String fname, String date) {
         return mServer.requestInList(flag, fname, date).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<InListBean> requestOutList(String flag, String fname, String date) {
+        return mServer.requestOutList(flag, fname, date).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<InListBean> requestLinkList(String pageNum, String fname) {
+        return mServer.requestLinkList(pageNum, fname).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<BaseBean> requestNote(String fid, String note) {
+        return mServer.requestSaveNode(fid, note).compose(new IoMainSchedule<>());
     }
 
     public Observable<LoginBean> requestLogin(String account, String password) {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="350dp"
+    android:background="@color/white">
+
+    <top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView
+        android:id="@+id/ivFAvatar"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:src="@drawable/main_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:poly_vertices="0"/>
+
+    <TextView
+        android:id="@+id/tvFName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_13dp"
+        android:text="所依家"
+        app:layout_constraintEnd_toEndOf="@+id/ivFAvatar"
+        app:layout_constraintStart_toStartOf="@+id/ivFAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/ivFAvatar"/>
+
+    <EditText
+        android:textColor="@color/color666"
+        android:gravity="start"
+        android:padding="@dimen/dimen_3dp"
+        android:id="@+id/edNote"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150dp"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:background="@drawable/shape_border_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFName"/>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="@dimen/dimen_90dp"
+        android:layout_height="@dimen/dimen_30dp"
+        android:layout_marginBottom="@dimen/dimen_30dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@drawable/shape_theme_rect_3"
+        android:text="保存"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edNote"/>
+</android.support.constraint.ConstraintLayout>

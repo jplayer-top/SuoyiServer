@@ -41,7 +41,7 @@ public class InListBean extends BaseBean {
         public String fname;
         public String favatar;
         public String date;
-        public int noteNum;
+        public int notenum;
         public List<NotesBean> notes;
 
         @Override
