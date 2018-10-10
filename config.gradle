@@ -21,8 +21,8 @@ ext {
             "release": "https://app.xiaoyi99.com/",
     ]
     key_rong = [
-            "debug"  : "x18ywvqfxndcc",
-            "release": "x18ywvqfxndcc"
+            "debug"  : "qf3d5gbjqfauh",
+            "release": "sfci50a7sfr2i"
     ]
     supportDeps = [
             //--------  support  -------

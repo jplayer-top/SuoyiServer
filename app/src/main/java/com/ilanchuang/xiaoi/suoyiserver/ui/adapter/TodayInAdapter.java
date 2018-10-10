@@ -56,6 +56,7 @@ public class TodayInAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                         .setVisible(R.id.tvHeaderNum, hasNotes)
                         .setVisible(R.id.ivExpand, hasNotes)
                         .addOnClickListener(R.id.ivHeaderEdit)
+                        .addOnClickListener(R.id.ivHeaderCall)
                         .setText(R.id.tvHeaderTip, "备注");
                 if (hasNotes) {
                     InListBean.ListBean.NotesBean notesBean = listBean.notes.get(0);

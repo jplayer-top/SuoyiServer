@@ -12,11 +12,50 @@ android {
         multiDexEnabled true
 
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            assets.srcDirs = ['assets']
+        }
+    }
+    signingConfigs {
+        config {
+            keyAlias "obl"
+            keyPassword "lj011200"
+            storeFile file("../obl.jks")
+            storePassword "lj011200"
+        }
 
-    buildTypes {
+        debug {
+            keyAlias "obl"
+            keyPassword "lj011200"
+            storeFile file("../obl.jks")
+            storePassword "lj011200"
+
+        }
         release {
+            keyAlias "obl"
+            keyPassword "lj011200"
+            storeFile file("../obl.jks")
+            storePassword "lj011200"
+        }
+    }
+    buildTypes {
+        def url = rootProject.ext.url
+        def key_rong = rootProject.ext.key_rong
+        release {
+            buildConfigField "String", "HOST", "\"${url["release"]}\""
+            minifyEnabled false // 开启混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [RONG_KEY: key_rong["release"], CHANNEL_NAME: "dev"]
+            signingConfig signingConfigs.config
+        }
+        debug {
+            buildConfigField "String", "HOST", "\"${url["debug"]}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [RONG_KEY: key_rong["debug"], CHANNEL_NAME: "dev"]
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -31,7 +70,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:0.5'
     implementation project(':baseprolibrary')
-
+    implementation project(':CallKit')
+    implementation project(':CallLib')
+    implementation project(':IMKit')
+    implementation project(':IMLib')
+    implementation files('libs/AMap_2DMap_V2.9.0_20160525.jar')
+    implementation files('libs/AMap_Channel_Location_V1.4.0_20160708.jar')
+    implementation files('libs/AMap_Search_V3.4.0_20160811.jar')
+    implementation files('libs/MiPush_SDK_Client_3_5_1.jar')
+    implementation 'com.huawei.android.hms:push:2.5.3.305'
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
