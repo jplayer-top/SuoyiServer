@@ -1,6 +1,7 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe.model;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
@@ -27,6 +28,10 @@ public class ServerModel extends BaseModel<SYServer> {
         return mServer.requestUserInfo().compose(new IoMainSchedule<>());
     }
 
+    public Observable<BaseBean> requestLogout() {
+        return mServer.logout().compose(new IoMainSchedule<>());
+    }
+
     public Observable<TypeNumBean> requestTypeNum() {
         return mServer.requestTypeNum().compose(new IoMainSchedule<>());
     }
@@ -47,7 +52,15 @@ public class ServerModel extends BaseModel<SYServer> {
         return mServer.requestSaveNode(fid, note).compose(new IoMainSchedule<>());
     }
 
+    public Observable<CallOutBean> requestOut(String fid) {
+        return mServer.requestOut(fid).compose(new IoMainSchedule<>());
+    }public Observable<CallOutBean> requestIn(String duid) {
+        return mServer.requestIn(duid).compose(new IoMainSchedule<>());
+    }
+
     public Observable<LoginBean> requestLogin(String account, String password) {
         return mServer.requestLogin(account, password).compose(new IoMainSchedule<>());
     }
+
+
 }

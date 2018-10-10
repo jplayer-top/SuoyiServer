@@ -5,6 +5,8 @@ import android.widget.EditText;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.ilanchuang.xiaoi.suoyiserver.R;
+import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.TodayInPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.rong.callkit.CustomRongCallKit;
 import io.rong.callkit.RongCallKit;
 import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.ui.fragment.SuperBaseFragment;
@@ -61,9 +64,9 @@ public class TodayInFragment extends SuperBaseFragment {
                 AndPermission.with(this)
                         .permission(Permission.CAMERA, Permission.RECORD_AUDIO)
                         .onGranted(permissions -> {
-                            RongCallKit.startSingleCall(mActivity, "d_10017", RongCallKit.CallMediaType
-                                    .CALL_MEDIA_TYPE_VIDEO);
-//                            mPresenter.requestLevel();
+//                            RongCallKit.startSingleCall(mActivity, "d_10017", RongCallKit.CallMediaType
+//                                    .CALL_MEDIA_TYPE_VIDEO);
+                            mPresenter.requestOut(listBean.fid + "");
                         })
                         .onDenied(permissions -> {
                             AndPermission.hasAlwaysDeniedPermission(mActivity, permissions);
@@ -102,4 +105,11 @@ public class TodayInFragment extends SuperBaseFragment {
     public void responseNote(BaseBean bean) {
         mPresenter.requestInList("1", null, null);
     }
+
+    public void responseOut(CallOutBean bean) {
+        SYSApplication.callOutBean = bean;
+        CustomRongCallKit.startSingleCall(mActivity, bean.family.duid, RongCallKit.CallMediaType
+                .CALL_MEDIA_TYPE_VIDEO,bean);
+    }
+
 }

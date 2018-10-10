@@ -1,6 +1,6 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe.iview;
 
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayInBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserListBean;
@@ -16,7 +16,7 @@ import top.jplayer.baseprolibrary.mvp.contract.IContract;
 
 public interface ContractIView {
     interface MainIView extends IContract.IView {
-        void todayIn(TodayInBean bean);
+        void todayIn(CallOutBean bean);
 
         void todayOut(TodayOutBean bean);
 

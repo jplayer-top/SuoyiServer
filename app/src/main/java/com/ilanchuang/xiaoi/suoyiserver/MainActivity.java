@@ -17,16 +17,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.MainPresenter;
+import com.ilanchuang.xiaoi.suoyiserver.ui.activity.LoginActivity;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayInFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayOutFragment;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
 import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.ui.adapter.BaseViewPagerFragmentAdapter;
+import top.jplayer.baseprolibrary.utils.ActivityUtils;
 import top.jplayer.baseprolibrary.utils.KeyboardUtils;
 import top.jplayer.baseprolibrary.utils.ToastUtils;
 import top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView;
@@ -95,7 +100,9 @@ public class MainActivity extends SuperBaseActivity {
                 .apply(GlideUtils.init().options(R.mipmap.ic_launcher))
                 .into(mIvUserAvatar);
 
-
+        mLlLogout.setOnClickListener(v -> {
+            mPresenter.requestLogout();
+        });
     }
 
     @Override
@@ -128,5 +135,10 @@ public class MainActivity extends SuperBaseActivity {
         map.put("用户列表(" + bean.linkman + ")", new LinkListFragment());
         mViewPager.setAdapter(new BaseViewPagerFragmentAdapter<>(getSupportFragmentManager(), map));
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    public void logout() {
+        ActivityUtils.init().start(this, LoginActivity.class);
+        Observable.timer(1, TimeUnit.SECONDS).subscribe(aLong -> finish());
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
@@ -70,12 +71,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
         </FrameLayout>
-        <!--自定义界面-->
+        <!--自定义接听界面-->
         <RelativeLayout
             android:id="@+id/customBtnBelow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tvSingleName"
@@ -180,5 +182,196 @@
 
             </LinearLayout>
         </RelativeLayout>
+        <!--自定义拨打界面-->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/customCall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView
+                android:id="@+id/ivFAvatar"
+                android:layout_width="@dimen/dimen_120dp"
+                android:layout_height="@dimen/dimen_120dp"
+                android:layout_marginTop="@dimen/dimen_75dp"
+                android:src="@drawable/main_home"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:poly_vertices="0"/>
+
+            <TextView
+                android:id="@+id/tvFName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_22dp"
+                android:text="家"
+                android:textColor="@color/color333"
+                android:textSize="@dimen/dimen_15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivFAvatar"/>
+
+
+            <TextView
+                android:id="@+id/tvFLocal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dimen_12dp"
+                android:text="详细地址"
+                android:textColor="@color/color333"
+                android:textSize="@dimen/dimen_15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvFName"/>
+
+            <LinearLayout
+                android:id="@+id/llOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/llTwo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvFLocal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvOne"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="家人"
+                        android:textColor="@color/color333"
+                        android:textSize="@dimen/dimen_14sp"/>
+
+                    <ImageView
+                        android:id="@+id/ivOne"
+                        android:layout_width="@dimen/dimen_14dp"
+                        android:layout_height="@dimen/dimen_14dp"
+                        android:layout_marginStart="@dimen/dimen_3dp"
+                        android:src="@drawable/call_man"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvOneNode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="暂无备注信息"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/ivLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOne">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="家人"
+                        android:textColor="@color/color333"
+                        android:textSize="@dimen/dimen_14sp"/>
+
+                    <ImageView
+                        android:id="@+id/ivTwo"
+                        android:layout_width="@dimen/dimen_14dp"
+                        android:layout_height="@dimen/dimen_14dp"
+                        android:layout_marginStart="@dimen/dimen_3dp"
+                        android:src="@drawable/call_man"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTwoNode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="暂无备注信息"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivLine"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_30dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/call_bg_line"
+                app:layout_constraintBottom_toTopOf="@+id/llOkOrError"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/llOkOrError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_15dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+
+                <LinearLayout
+                    android:id="@+id/llCallOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/llCallError">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_60dp"
+                        android:layout_height="@dimen/dimen_60dp"
+                        android:layout_marginBottom="@dimen/dimen_5dp"
+                        android:src="@drawable/call_ok"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="接听"
+                        android:textSize="@dimen/dimen_11sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llCallError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/llCallOk"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_60dp"
+                        android:layout_height="@dimen/dimen_60dp"
+                        android:layout_marginBottom="@dimen/dimen_5dp"
+                        android:src="@drawable/call_error"/>
+
+                    <TextView
+                        android:id="@+id/tvCallError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="拒绝"
+                        android:textSize="@dimen/dimen_11sp"/>
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
     </RelativeLayout>
 </FrameLayout>

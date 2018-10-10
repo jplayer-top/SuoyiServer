@@ -3,7 +3,7 @@ package com.ilanchuang.xiaoi.suoyiserver.mvpbe;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TodayInBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
 
@@ -23,10 +23,10 @@ import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 public interface SYServer {
 
     @GET("serv/call/info2?")
-    Observable<TodayInBean> requestTodayIn(@Query("duid") String did);
+    Observable<CallOutBean> requestIn(@Query("duid") String did);
 
     @GET("serv/call/info?")
-    Observable<TodayInBean> requestTodayOut(@Query("fid") String did);
+    Observable<CallOutBean> requestOut(@Query("fid") String did);
 
     @POST("serv/call/inlist?")
     Observable<InListBean> requestInList(@Query("flag") String flag, @Query("fname") String fname, @Query("date") String date);
@@ -57,4 +57,5 @@ public interface SYServer {
 
     @POST("serv/user/info?")
     Observable<UserInfoBean> requestUserInfo();
+
 }

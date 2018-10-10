@@ -3,6 +3,8 @@ package com.ilanchuang.xiaoi.suoyiserver;
 import android.app.Application;
 import android.support.multidex.MultiDexApplication;
 
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
+
 import io.rong.calllib.RongCallClient;
 import io.rong.calllib.RongCallCommon;
 import io.rong.imkit.RongIM;
@@ -26,6 +28,7 @@ public class SYSApplication extends MultiDexApplication {
     public static String avatar = "";
     public static String name = "";
     public static String type = "";
+    public static CallOutBean callOutBean = null;
 
     @Override
     public void onCreate() {

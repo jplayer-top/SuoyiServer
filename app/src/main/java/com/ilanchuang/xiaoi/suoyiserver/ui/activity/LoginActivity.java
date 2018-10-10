@@ -14,10 +14,12 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.LoginPresenter;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.utils.ActivityUtils;
 import top.jplayer.baseprolibrary.utils.StringUtils;
@@ -104,6 +106,6 @@ public class LoginActivity extends SuperBaseActivity implements TextWatcher {
         SYSApplication.type = String.format(Locale.CHINA, "账号类型：%s", userInfoBean.type);
         SYSApplication.avatar = userInfoBean.avator;
         ActivityUtils.init().start(this, MainActivity.class);
-        finish();
+        Observable.timer(1, TimeUnit.SECONDS).subscribe(aLong -> finish());
     }
 }

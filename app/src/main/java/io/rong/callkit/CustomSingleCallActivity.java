@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
@@ -17,11 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import io.rong.calllib.CallUserProfile;
+import io.rong.calllib.IRongCallListener;
 import io.rong.calllib.RongCallClient;
 import io.rong.calllib.RongCallCommon;
 import io.rong.calllib.RongCallSession;
@@ -34,6 +41,9 @@ import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
+import top.jplayer.baseprolibrary.glide.GlideUtils;
+import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
+import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
 
 public class CustomSingleCallActivity extends BaseCallActivity implements Handler.Callback {
     private static final String TAG = "VoIPSingleActivity";
@@ -54,6 +64,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     private String targetId = null;
     private RongCallCommon.CallMediaType mediaType;
     private RelativeLayout mCustomBtnBelow;
+    private ConstraintLayout mCustomCall;
 
     @Override
     final public boolean handleMessage(Message msg) {
@@ -70,11 +81,13 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         super.onCreate(savedInstanceState);
         setContentView(com.ilanchuang.xiaoi.suoyiserver.R.layout.rc_voip_activity_single_call);
         Intent intent = getIntent();
-        mLPreviewContainer = (FrameLayout) findViewById(R.id.rc_voip_call_large_preview);
-        mSPreviewContainer = (FrameLayout) findViewById(R.id.rc_voip_call_small_preview);
-        mButtonContainer = (FrameLayout) findViewById(R.id.rc_voip_btn);
-        mUserInfoContainer = (LinearLayout) findViewById(R.id.rc_voip_user_info);
-        mCustomBtnBelow = (RelativeLayout) findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.customBtnBelow);
+        mLPreviewContainer = findViewById(R.id.rc_voip_call_large_preview);
+        mSPreviewContainer = findViewById(R.id.rc_voip_call_small_preview);
+        mButtonContainer = findViewById(R.id.rc_voip_btn);
+        mUserInfoContainer = findViewById(R.id.rc_voip_user_info);
+        mCustomBtnBelow = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.customBtnBelow);
+        mCustomCall = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.customCall);
+
         startForCheckPermissions = intent.getBooleanExtra("checkPermissions", false);
         RongCallAction callAction = RongCallAction.valueOf(intent.getStringExtra("callAction"));
 
@@ -283,6 +296,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         if (callAction.equals(RongCallAction.ACTION_OUTGOING_CALL)) {
             buttonLayout.findViewById(io.rong.callkit.R.id.rc_voip_call_mute).setVisibility(View.GONE);
             buttonLayout.findViewById(io.rong.callkit.R.id.rc_voip_handfree).setVisibility(View.GONE);
+            customOutCall(getIntent().getParcelableExtra("bean"));
         }
 
         if (mediaType.equals(RongCallCommon.CallMediaType.AUDIO)) {
@@ -291,7 +305,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             mSPreviewContainer.setVisibility(View.GONE);
 
             if (callAction.equals(RongCallAction.ACTION_INCOMING_CALL)) {
-                customButtomBtn();
+//                customButtomBtn();
+                customInCall();
                 buttonLayout = (FrameLayout) inflater.inflate(io.rong.callkit.R.layout.rc_voip_call_bottom_incoming_button_layout, null);
                 TextView callInfo = (TextView) userInfoLayout.findViewById(io.rong.callkit.R.id.rc_voip_call_remind_info);
                 callInfo.setText(io.rong.callkit.R.string.rc_voip_audio_call_inviting);
@@ -300,7 +315,72 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         } else {
             userInfoLayout = (RelativeLayout) inflater.inflate(io.rong.callkit.R.layout.rc_voip_video_call_user_info, null);
             if (callAction.equals(RongCallAction.ACTION_INCOMING_CALL)) {
-                customButtomBtn();
+//                customButtomBtn();
+                customInCall();
+                RongCallClient.getInstance().setVoIPCallListener(new IRongCallListener() {
+                    @Override
+                    public void onCallOutgoing(RongCallSession rongCallSession, SurfaceView surfaceView) {
+
+                    }
+
+                    @Override
+                    public void onCallConnected(RongCallSession rongCallSession, SurfaceView surfaceView) {
+
+                    }
+
+                    @Override
+                    public void onCallDisconnected(RongCallSession rongCallSession, RongCallCommon.CallDisconnectedReason callDisconnectedReason) {
+
+                    }
+
+                    @Override
+                    public void onRemoteUserRinging(String uid) {
+                        new ServerModel(SYServer.class)
+                                .requestIn(uid)
+                                .compose(new IoMainSchedule<>())
+                                .subscribe(new NetCallBackObserver<CallOutBean>() {
+                                    @Override
+                                    public void responseSuccess(CallOutBean callOutBean) {
+                                        initCallInfo(callOutBean);
+                                    }
+
+                                    @Override
+                                    public void responseFail(CallOutBean callOutBean) {
+
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onRemoteUserJoined(String s, RongCallCommon.CallMediaType callMediaType, SurfaceView surfaceView) {
+
+                    }
+
+                    @Override
+                    public void onRemoteUserInvited(String s, RongCallCommon.CallMediaType callMediaType) {
+
+                    }
+
+                    @Override
+                    public void onRemoteUserLeft(String s, RongCallCommon.CallDisconnectedReason callDisconnectedReason) {
+
+                    }
+
+                    @Override
+                    public void onMediaTypeChanged(String s, RongCallCommon.CallMediaType callMediaType, SurfaceView surfaceView) {
+
+                    }
+
+                    @Override
+                    public void onError(RongCallCommon.CallErrorCode callErrorCode) {
+
+                    }
+
+                    @Override
+                    public void onRemoteCameraDisabled(String s, boolean b) {
+
+                    }
+                });
                 findViewById(io.rong.callkit.R.id.rc_voip_call_information).setBackgroundColor(getResources().getColor(io.rong.callkit.R.color.rc_voip_background_color));
                 buttonLayout = (FrameLayout) inflater.inflate(io.rong.callkit.R.layout.rc_voip_call_bottom_incoming_button_layout, null);
                 TextView callInfo = (TextView) userInfoLayout.findViewById(io.rong.callkit.R.id.rc_voip_call_remind_info);
@@ -316,6 +396,53 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         mUserInfoContainer.addView(userInfoLayout);
     }
 
+    private void customInCall() {
+        String targetId = getIntent().getStringExtra("targetId");
+    }
+
+    private void customOutCall(CallOutBean bean) {
+        initCallInfo(bean);
+
+        findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llCallOk).setVisibility(View.GONE);
+        TextView tvCallError = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvCallError);
+        tvCallError.setText("取消");
+    }
+
+    private void initCallInfo(CallOutBean bean) {
+        mCustomCall.setVisibility(View.VISIBLE);
+        ImageView ivFAvatar = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivFAvatar);
+        CallOutBean.FamilyBean family = bean.family;
+        Glide.with(this).load(family.favatar).apply(GlideUtils.init().options(com.ilanchuang.xiaoi.suoyiserver.R.drawable.main_home)).into(ivFAvatar);
+        TextView tvFName = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvFName);
+        TextView tvFLocal = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvFLocal);
+        tvFName.setText(family.fname);
+        String addr = family.city + family.addr;
+        tvFLocal.setText(addr);
+        List<CallOutBean.RecordsBean> records = bean.records;
+        findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llTwo).setVisibility(records.size() < 2 ? View.GONE : View.VISIBLE);
+        if (records.size() > 0) {
+            TextView tvOne = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvOne);
+            TextView tvOneNode = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvOneNode);
+            ImageView ivOne = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivOne);
+            if (records.size() > 1) {
+                ImageView ivTwo = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivTwo);
+                TextView tvTwo = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvTwo);
+                TextView tvTwoNode = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvTwoNode);
+                CallOutBean.RecordsBean bean1 = records.get(0);
+                tvTwo.setText(bean1.rname);
+                ivTwo.setImageResource("男".equals(bean1.sex) ? com.ilanchuang.xiaoi.suoyiserver.R.drawable.call_man : com.ilanchuang.xiaoi.suoyiserver.R.drawable.call_woman);
+            }
+            CallOutBean.RecordsBean bean0 = records.get(0);
+            tvOne.setText(bean0.rname);
+            ivOne.setImageResource("男".equals(bean0.sex) ? com.ilanchuang.xiaoi.suoyiserver.R.drawable.call_man : com.ilanchuang.xiaoi.suoyiserver.R.drawable.call_woman);
+        }
+        findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llCallError).setOnClickListener(this::onHangupBtnClick);
+        findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llCallOk).setOnClickListener(v -> {
+            onReceiveBtnClick(v);
+            voiceCall = false;
+        });
+    }
+
     boolean voiceCall = false;
 
     private void customButtomBtn() {
@@ -324,7 +451,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             onReceiveBtnClick(v);
             voiceCall = true;
         });
-        mCustomBtnBelow.findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.answerResumeBtn).setOnClickListener(v -> onHangupBtnClick(v));
+        mCustomBtnBelow.findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.answerResumeBtn).setOnClickListener(this::onHangupBtnClick);
         mCustomBtnBelow.findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.answerVideoBtn).setOnClickListener(v -> {
 //                RongCallClient.getInstance().changeCallMediaType(RongCallCommon.CallMediaType.AUDIO);
 //                callSession.setMediaType(RongCallCommon.CallMediaType.AUDIO);
@@ -352,8 +479,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         this.callSession = callSession;
         TextView remindInfo = (TextView) mUserInfoContainer.findViewById(io.rong.callkit.R.id.rc_voip_call_remind_info);
         setupTime(remindInfo);
-        mCustomBtnBelow.setVisibility(View.GONE);
-
+//        mCustomBtnBelow.setVisibility(View.GONE);
+        mCustomCall.setVisibility(View.GONE);
         if (callSession.getMediaType().equals(RongCallCommon.CallMediaType.AUDIO)) {
             findViewById(io.rong.callkit.R.id.rc_voip_call_minimize).setVisibility(View.VISIBLE);
             FrameLayout btnLayout = (FrameLayout) inflater.inflate(io.rong.callkit.R.layout.rc_voip_call_bottom_connected_button_layout, null);
