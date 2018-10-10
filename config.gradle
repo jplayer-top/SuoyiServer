@@ -80,6 +80,8 @@ ext {
     toasty = 'com.github.GrenderG:Toasty:1.1.4'
     //流布局
     flowlayout = 'com.zhy:flowlayout-lib:1.0.3'
+    //EventBus
+    eventbus = 'org.greenrobot:eventbus:3.0.0'
     // 加载
     spinkit = 'com.github.ybq:Android-SpinKit:1.1.0'
     //PickerView
@@ -89,7 +91,7 @@ ext {
     //二维码
     qcode = 'cn.yipianfengye.android:zxing-library:2.2'
     //图片选择器
-    imagespickers =  'com.jaikydota.imagespickers:imagespickers:1.0.6'
+    imagespickers = 'com.jaikydota.imagespickers:imagespickers:1.0.6'
     //多边形图+图片滤镜
     polygon = 'com.kingja.magicmirror:magicmirror:1.2.0'
     //数据库 实时增删改查
@@ -129,7 +131,8 @@ ext {
                  polygon,
                  swipebacklayout,
                  ticker,
-                 imagespickers]
+                 imagespickers,
+                 eventbus]
     annotationProcessorLibs = [glideCompiler]
 
 }

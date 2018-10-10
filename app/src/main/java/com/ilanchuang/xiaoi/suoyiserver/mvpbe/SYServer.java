@@ -49,6 +49,9 @@ public interface SYServer {
     @GET("serv/user/onoff?")
     Observable<BaseBean> requestOnOff(@Query("online") String online);
 
+    @GET("serv/user/logout?")
+    Observable<BaseBean> logout();
+
     @POST("serv/user/login?")
     Observable<LoginBean> requestLogin(@Query("account") String account, @Query("password") String password);
 

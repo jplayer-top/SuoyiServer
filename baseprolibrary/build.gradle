@@ -92,6 +92,8 @@ dependencies {
     api(rootProject.ext.v_layout) {
         transitive = true
     }
+
+
     //GlideOkHttp
     api(rootProject.ext.glideOkhttp) {
         exclude group: 'glide-parent'
