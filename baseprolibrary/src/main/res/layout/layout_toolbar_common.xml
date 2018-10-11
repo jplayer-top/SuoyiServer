@@ -47,7 +47,6 @@
                 android:src="@drawable/search"/>
 
             <EditText
-                android:textSelectHandle="@color/white"
                 android:id="@+id/editSearch"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_26dp"
@@ -61,16 +60,19 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textCursorDrawable="@drawable/shape_cursor_white"
+                android:textSelectHandle="@color/white"
                 android:textSize="@dimen/dimen_12sp"/>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llIsOnLine"
             android:layout_width="?actionBarSize"
             android:layout_height="?actionBarSize"
             android:layout_gravity="end"
             android:gravity="center">
 
             <TextView
+                android:id="@+id/tvIsOnLine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dimen_3dp"
@@ -79,7 +81,7 @@
                 android:textSize="@dimen/dimen_13sp"/>
 
             <ImageView
-
+                android:id="@+id/ivIsOnLine"
                 android:layout_width="@dimen/dimen_10dp"
                 android:layout_height="@dimen/dimen_6dp"
                 android:src="@drawable/main_online_arrow"/>

@@ -72,6 +72,12 @@ public class MainActivity extends SuperBaseActivity {
     LinearLayout mLlOutFind;
     @BindView(R.id.llLogout)
     LinearLayout mLlLogout;
+    @BindView(R.id.tvIsOnLine)
+    TextView mTvIsOnLine;
+    @BindView(R.id.ivIsOnLine)
+    ImageView mIvIsOnLine;
+    @BindView(R.id.llIsOnLine)
+    LinearLayout mLlIsOnLine;
     private Unbinder mBind;
     private MainPresenter mPresenter;
 
@@ -102,6 +108,10 @@ public class MainActivity extends SuperBaseActivity {
 
         mLlLogout.setOnClickListener(v -> {
             mPresenter.requestLogout();
+        });
+        mLlIsOnLine.setOnClickListener(v -> {
+//            RongCallKit.startSingleCall(mActivity, "d_10017", RongCallKit.CallMediaType
+//                    .CALL_MEDIA_TYPE_VIDEO);
         });
     }
 
@@ -141,4 +151,5 @@ public class MainActivity extends SuperBaseActivity {
         ActivityUtils.init().start(this, LoginActivity.class);
         Observable.timer(1, TimeUnit.SECONDS).subscribe(aLong -> finish());
     }
+
 }

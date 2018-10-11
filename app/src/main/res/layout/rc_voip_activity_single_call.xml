@@ -64,6 +64,27 @@
                 android:text="@string/rc_voip_switch_to_audio"/>
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/ivCallInfo"
+            android:layout_width="@dimen/dimen_60dp"
+            android:layout_height="@dimen/dimen_60dp"
+            android:layout_alignBottom="@+id/ivCallMessage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/dimen_80dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:src="@drawable/call_info"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ivCallMessage"
+            android:layout_width="@dimen/dimen_60dp"
+            android:layout_height="@dimen/dimen_60dp"
+            android:layout_alignBottom="@+id/rc_voip_btn"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/dimen_120dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:src="@drawable/call_message"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/rc_voip_btn"
@@ -71,6 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
         </FrameLayout>
+
+
         <!--自定义接听界面-->
         <RelativeLayout
             android:id="@+id/customBtnBelow"
@@ -187,7 +210,8 @@
             android:id="@+id/customCall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
 
             <top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView
                 android:id="@+id/ivFAvatar"

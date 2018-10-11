@@ -4,6 +4,7 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.RecordUserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
 
@@ -58,4 +59,6 @@ public interface SYServer {
     @POST("serv/user/info?")
     Observable<UserInfoBean> requestUserInfo();
 
+    @GET("serv/call/records?")
+    Observable<RecordUserInfoBean> requestRecordUserInfo(@Query("fid") String fid);
 }

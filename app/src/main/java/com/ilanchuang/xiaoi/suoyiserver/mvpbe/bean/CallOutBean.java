@@ -14,7 +14,7 @@ import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
  * github : https://github.com/oblivion0001
  */
 
-public class CallOutBean extends BaseBean  implements Parcelable {
+public class CallOutBean extends BaseBean implements Parcelable {
 
     /**
      * family : {"fid":10017,"favatar":"","fname":"在家里面还有人会觉得","duid":"d_0","date":"","city":"青岛市","addr":"山东省青岛市市北区null青岛站"}

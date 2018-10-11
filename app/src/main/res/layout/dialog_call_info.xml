@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color666"
+    android:paddingBottom="@dimen/dimen_10dp">
+
+    <ImageView
+        android:id="@+id/ivCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:rotation="90"
+        android:src="@drawable/right_arrow"
+        android:tint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvFName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:text="家"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_1dp"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:src="@drawable/call_info_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="个人信息"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/dimen_9sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFName"/>
+
+    <LinearLayout
+        android:id="@+id/llOne"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginTop="@dimen/dimen_35dp"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFName">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名：家人"
+                android:textColor="@color/color333"
+                android:textSize="@dimen/dimen_14sp"/>
+
+            <ImageView
+                android:id="@+id/ivOne"
+                android:layout_width="@dimen/dimen_14dp"
+                android:layout_height="@dimen/dimen_14dp"
+                android:layout_marginStart="@dimen/dimen_3dp"
+                android:src="@drawable/call_man"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvFPhoneOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="电话：12345678901"/>
+
+        <TextView
+            android:id="@+id/tvFBirthdayOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="生日：1993年7月3日"/>
+
+        <TextView
+            android:id="@+id/tvFIDOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="身份证号：123456789012345678"/>
+
+        <TextView
+            android:id="@+id/tvFLocalOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="所在城市：青岛市"/>
+
+        <TextView
+            android:id="@+id/tvFAddrOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="详细地址：山东省青岛市市北区山东路171号"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llTwo"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llOne">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名：家人"
+                android:textColor="@color/color333"
+                android:textSize="@dimen/dimen_14sp"/>
+
+            <ImageView
+                android:id="@+id/ivTwo"
+                android:layout_width="@dimen/dimen_14dp"
+                android:layout_height="@dimen/dimen_14dp"
+                android:layout_marginStart="@dimen/dimen_3dp"
+                android:src="@drawable/call_man"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvFPhoneTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="电话：12345678901"/>
+
+        <TextView
+            android:id="@+id/tvFBirthdayTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="生日：1993年7月3日"/>
+
+        <TextView
+            android:id="@+id/tvFIDTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="身份证号：123456789012345678"/>
+
+        <TextView
+            android:id="@+id/tvFLocalTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="所在城市：青岛市"/>
+
+        <TextView
+            android:id="@+id/tvFAddrTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="详细地址：山东省青岛市市北区山东路171号"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

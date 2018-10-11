@@ -22,13 +22,13 @@ import com.bumptech.glide.Glide;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
+import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import io.rong.calllib.CallUserProfile;
-import io.rong.calllib.IRongCallListener;
 import io.rong.calllib.RongCallClient;
 import io.rong.calllib.RongCallCommon;
 import io.rong.calllib.RongCallSession;
@@ -44,6 +44,7 @@ import io.rong.imlib.model.UserInfo;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
 import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
+import top.jplayer.baseprolibrary.utils.ToastUtils;
 
 public class CustomSingleCallActivity extends BaseCallActivity implements Handler.Callback {
     private static final String TAG = "VoIPSingleActivity";
@@ -65,6 +66,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     private RongCallCommon.CallMediaType mediaType;
     private RelativeLayout mCustomBtnBelow;
     private ConstraintLayout mCustomCall;
+    private ImageView mIvCallInfo;
+    private ImageView mIvCallMessage;
 
     @Override
     final public boolean handleMessage(Message msg) {
@@ -86,6 +89,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         mButtonContainer = findViewById(R.id.rc_voip_btn);
         mUserInfoContainer = findViewById(R.id.rc_voip_user_info);
         mCustomBtnBelow = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.customBtnBelow);
+        mIvCallInfo = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivCallInfo);
+        mIvCallMessage = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivCallMessage);
         mCustomCall = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.customCall);
 
         startForCheckPermissions = intent.getBooleanExtra("checkPermissions", false);
@@ -317,70 +322,6 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             if (callAction.equals(RongCallAction.ACTION_INCOMING_CALL)) {
 //                customButtomBtn();
                 customInCall();
-                RongCallClient.getInstance().setVoIPCallListener(new IRongCallListener() {
-                    @Override
-                    public void onCallOutgoing(RongCallSession rongCallSession, SurfaceView surfaceView) {
-
-                    }
-
-                    @Override
-                    public void onCallConnected(RongCallSession rongCallSession, SurfaceView surfaceView) {
-
-                    }
-
-                    @Override
-                    public void onCallDisconnected(RongCallSession rongCallSession, RongCallCommon.CallDisconnectedReason callDisconnectedReason) {
-
-                    }
-
-                    @Override
-                    public void onRemoteUserRinging(String uid) {
-                        new ServerModel(SYServer.class)
-                                .requestIn(uid)
-                                .compose(new IoMainSchedule<>())
-                                .subscribe(new NetCallBackObserver<CallOutBean>() {
-                                    @Override
-                                    public void responseSuccess(CallOutBean callOutBean) {
-                                        initCallInfo(callOutBean);
-                                    }
-
-                                    @Override
-                                    public void responseFail(CallOutBean callOutBean) {
-
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onRemoteUserJoined(String s, RongCallCommon.CallMediaType callMediaType, SurfaceView surfaceView) {
-
-                    }
-
-                    @Override
-                    public void onRemoteUserInvited(String s, RongCallCommon.CallMediaType callMediaType) {
-
-                    }
-
-                    @Override
-                    public void onRemoteUserLeft(String s, RongCallCommon.CallDisconnectedReason callDisconnectedReason) {
-
-                    }
-
-                    @Override
-                    public void onMediaTypeChanged(String s, RongCallCommon.CallMediaType callMediaType, SurfaceView surfaceView) {
-
-                    }
-
-                    @Override
-                    public void onError(RongCallCommon.CallErrorCode callErrorCode) {
-
-                    }
-
-                    @Override
-                    public void onRemoteCameraDisabled(String s, boolean b) {
-
-                    }
-                });
                 findViewById(io.rong.callkit.R.id.rc_voip_call_information).setBackgroundColor(getResources().getColor(io.rong.callkit.R.color.rc_voip_background_color));
                 buttonLayout = (FrameLayout) inflater.inflate(io.rong.callkit.R.layout.rc_voip_call_bottom_incoming_button_layout, null);
                 TextView callInfo = (TextView) userInfoLayout.findViewById(io.rong.callkit.R.id.rc_voip_call_remind_info);
@@ -397,19 +338,50 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     }
 
     private void customInCall() {
-        String targetId = getIntent().getStringExtra("targetId");
+        RongCallSession callSession = RongCallClient.getInstance().getCallSession();
+        String targetId = callSession.getTargetId();
+        // TODO: 2018/10/11
+        targetId = "d_10017";
+        new ServerModel(SYServer.class)
+                .requestIn(targetId.replace("u", "d"))
+                .compose(new IoMainSchedule<>())
+                .subscribe(new NetCallBackObserver<CallOutBean>() {
+                    @Override
+                    public void responseSuccess(CallOutBean callOutBean) {
+                        initCallInfo(callOutBean);
+                    }
+
+                    @Override
+                    public void responseFail(CallOutBean callOutBean) {
+
+                    }
+                });
     }
+
+    public String fid = "";
+    public String fname = "家";
 
     private void customOutCall(CallOutBean bean) {
         initCallInfo(bean);
-
         findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llCallOk).setVisibility(View.GONE);
         TextView tvCallError = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvCallError);
         tvCallError.setText("取消");
     }
 
+    private void initCallConnect() {
+        mCustomCall.setVisibility(View.GONE);
+        mIvCallInfo.setVisibility(View.VISIBLE);
+        mIvCallMessage.setVisibility(View.VISIBLE);
+        mIvCallMessage.setOnClickListener(v -> {
+            ToastUtils.init().showQuickToast("message");
+        });
+        mIvCallInfo.setOnClickListener(v -> new DialogCallInfo(this).setFid(fid,fname ).show());
+    }
+
     private void initCallInfo(CallOutBean bean) {
         mCustomCall.setVisibility(View.VISIBLE);
+        fid = bean.family.fid + "";
+        fname = bean.family.fname;
         ImageView ivFAvatar = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivFAvatar);
         CallOutBean.FamilyBean family = bean.family;
         Glide.with(this).load(family.favatar).apply(GlideUtils.init().options(com.ilanchuang.xiaoi.suoyiserver.R.drawable.main_home)).into(ivFAvatar);
@@ -480,7 +452,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         TextView remindInfo = (TextView) mUserInfoContainer.findViewById(io.rong.callkit.R.id.rc_voip_call_remind_info);
         setupTime(remindInfo);
 //        mCustomBtnBelow.setVisibility(View.GONE);
-        mCustomCall.setVisibility(View.GONE);
+        initCallConnect();
         if (callSession.getMediaType().equals(RongCallCommon.CallMediaType.AUDIO)) {
             findViewById(io.rong.callkit.R.id.rc_voip_call_minimize).setVisibility(View.VISIBLE);
             FrameLayout btnLayout = (FrameLayout) inflater.inflate(io.rong.callkit.R.layout.rc_voip_call_bottom_connected_button_layout, null);
