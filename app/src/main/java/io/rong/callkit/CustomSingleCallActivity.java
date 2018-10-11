@@ -19,10 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallInfo;
+import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallMessageOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,6 @@ import io.rong.imlib.model.UserInfo;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
 import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
-import top.jplayer.baseprolibrary.utils.ToastUtils;
 
 public class CustomSingleCallActivity extends BaseCallActivity implements Handler.Callback {
     private static final String TAG = "VoIPSingleActivity";
@@ -373,13 +374,17 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         mIvCallInfo.setVisibility(View.VISIBLE);
         mIvCallMessage.setVisibility(View.VISIBLE);
         mIvCallMessage.setOnClickListener(v -> {
-            ToastUtils.init().showQuickToast("message");
+            if (SYSApplication.type.contains("客服")) {
+                new DialogCallMessageOrder(this).setFid(fid, fname).show();
+            }
         });
-        mIvCallInfo.setOnClickListener(v -> new DialogCallInfo(this).setFid(fid,fname ).show());
+        mIvCallInfo.setOnClickListener(v -> new DialogCallInfo(this).setFid(fid, fname).show());
     }
 
     private void initCallInfo(CallOutBean bean) {
         mCustomCall.setVisibility(View.VISIBLE);
+        mIvCallMessage.setVisibility(View.GONE);
+        mIvCallInfo.setVisibility(View.GONE);
         fid = bean.family.fid + "";
         fname = bean.family.fname;
         ImageView ivFAvatar = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.ivFAvatar);

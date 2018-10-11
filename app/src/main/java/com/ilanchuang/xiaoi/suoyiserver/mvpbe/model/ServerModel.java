@@ -7,6 +7,7 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.RecordUserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
 
 import io.reactivex.Observable;
 import top.jplayer.baseprolibrary.mvp.model.BaseModel;
@@ -55,12 +56,20 @@ public class ServerModel extends BaseModel<SYServer> {
 
     public Observable<CallOutBean> requestOut(String fid) {
         return mServer.requestOut(fid).compose(new IoMainSchedule<>());
-    }public Observable<CallOutBean> requestIn(String duid) {
+    }
+
+    public Observable<CallOutBean> requestIn(String duid) {
         return mServer.requestIn(duid).compose(new IoMainSchedule<>());
     }
-public Observable<RecordUserInfoBean> requestRecordUserInfo(String fid){
+
+    public Observable<RecordUserInfoBean> requestRecordUserInfo(String fid) {
         return mServer.requestRecordUserInfo(fid).compose(new IoMainSchedule<>());
-}
+    }
+
+    public Observable<CallMessageBean> requestCallMessage(String fid) {
+        return mServer.requestUserMessage(fid).compose(new IoMainSchedule<>());
+    }
+
     public Observable<LoginBean> requestLogin(String account, String password) {
         return mServer.requestLogin(account, password).compose(new IoMainSchedule<>());
     }

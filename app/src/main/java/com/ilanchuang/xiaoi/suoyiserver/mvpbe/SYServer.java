@@ -7,6 +7,7 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.RecordUserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -61,4 +62,10 @@ public interface SYServer {
 
     @GET("serv/call/records?")
     Observable<RecordUserInfoBean> requestRecordUserInfo(@Query("fid") String fid);
+
+    @GET("serv/call/detail?")
+    Observable<CallMessageBean> requestUserMessage(@Query("fid") String fid);
+
+    @GET("serv/call/detail?")
+    Observable<CallMessageBean> requestUserMessage(@Query("fid") String fid, @Query("type") String type);
 }
