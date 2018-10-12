@@ -32,7 +32,11 @@ public class TodayOutPresenter extends BasePresenter<TodayOutFragment> {
         mModel.requestOutList(flag, fname, date).subscribe(new NetCallBackObserver<InListBean>() {
             @Override
             public void responseSuccess(InListBean inListBean) {
-                mIView.responseOutList(inListBean);
+                if (inListBean.list == null || inListBean.list.size() < 1) {
+                    mIView.showEmpty();
+                } else {
+                    mIView.responseOutList(inListBean);
+                }
             }
 
             @Override

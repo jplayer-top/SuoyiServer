@@ -32,7 +32,11 @@ public class LinkListPresenter extends BasePresenter<LinkListFragment> {
         mModel.requestLinkList(pageNum, fname).subscribe(new NetCallBackObserver<InListBean>() {
             @Override
             public void responseSuccess(InListBean inListBean) {
-                mIView.responseLinkList(inListBean);
+                if (inListBean.list == null || inListBean.list.size() < 1) {
+                    mIView.showEmpty();
+                } else {
+                    mIView.responseLinkList(inListBean);
+                }
             }
 
             @Override
@@ -41,6 +45,7 @@ public class LinkListPresenter extends BasePresenter<LinkListFragment> {
             }
         });
     }
+
     public void requestOut(String fid) {
         mModel.requestOut(fid).subscribe(new NetCallBackObserver<CallOutBean>(new LoadingImplTip(mIView.mActivity)) {
             @Override

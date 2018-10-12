@@ -8,11 +8,15 @@ import com.ilanchuang.xiaoi.suoyiserver.R;
 import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.EditSearchEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.LinkListPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogNote;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +53,17 @@ public class LinkListFragment extends SuperBaseFragment {
         mAdapter = new TodayInAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
         mPresenter = new LinkListPresenter(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         showLoading();
-        mPresenter.requestLinkList("0", null);
+        if (this.bean != null) {
+            responseLinkList(this.bean);
+        } else {
+            mPresenter.requestLinkList("0", searchStr);
+        }
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-                InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
+            InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
             if (view.getId() == R.id.ivHeaderEdit) {
                 mDialogNote = new DialogNote(this.getContext()).setFName(listBean.fname).setFAvatar(listBean.favatar);
                 mDialogNote.show(R.id.btnSave, view1 -> {
@@ -60,7 +71,7 @@ public class LinkListFragment extends SuperBaseFragment {
                     mDialogNote.dismiss();
                     mPresenter.requestNote(listBean.fid + "", editText.getText().toString());
                 });
-            }else {
+            } else {
                 AndPermission.with(this)
                         .permission(Permission.CAMERA, Permission.RECORD_AUDIO)
                         .onGranted(permissions -> {
@@ -76,8 +87,19 @@ public class LinkListFragment extends SuperBaseFragment {
         });
     }
 
+    public String searchStr = null;
+
+    @Subscribe
+    public void onEvent(EditSearchEvent event) {
+        if (event.pos == 2) {
+            searchStr = event.search;
+            mPresenter.requestLinkList("0", event.search);
+        }
+    }
+
     @Override
     public void refreshStart() {
+        searchStr = null;
         mPresenter.requestLinkList("1", null);
     }
 
@@ -96,11 +118,23 @@ public class LinkListFragment extends SuperBaseFragment {
     }
 
     public void responseNote(BaseBean bean) {
-        mPresenter.requestLinkList("1", null);
+        mPresenter.requestLinkList("1", searchStr);
     }
 
+    public InListBean bean;
 
     public void responseLinkList(InListBean inListBean) {
+        this.bean = inListBean;
+        initLinkList(inListBean);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void initLinkList(InListBean inListBean) {
         responseSuccess();
         generateData(inListBean.list);
         mAdapter.setNewData(mEntityList);
@@ -109,6 +143,6 @@ public class LinkListFragment extends SuperBaseFragment {
     public void responseOut(CallOutBean bean) {
         SYSApplication.callOutBean = bean;
         CustomRongCallKit.startSingleCall(mActivity, bean.family.duid, RongCallKit.CallMediaType
-                .CALL_MEDIA_TYPE_VIDEO,bean);
+                .CALL_MEDIA_TYPE_VIDEO, bean);
     }
 }

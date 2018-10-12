@@ -32,7 +32,11 @@ public class TodayInPresenter extends BasePresenter<TodayInFragment> {
         mModel.requestInList(flag, fname, date).subscribe(new NetCallBackObserver<InListBean>() {
             @Override
             public void responseSuccess(InListBean inListBean) {
-                mIView.responseInList(inListBean);
+                if (inListBean.list == null || inListBean.list.size() < 1) {
+                    mIView.showEmpty();
+                } else {
+                    mIView.responseInList(inListBean);
+                }
             }
 
             @Override

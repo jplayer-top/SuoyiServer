@@ -8,6 +8,7 @@ import com.ilanchuang.xiaoi.suoyiserver.R;
 import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.EditSearchEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.TodayInPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
@@ -57,7 +58,11 @@ public class TodayInFragment extends SuperBaseFragment {
             EventBus.getDefault().register(this);
         }
         showLoading();
-        mPresenter.requestInList("0", null, null);
+        if (this.bean != null) {
+            responseInList(this.bean);
+        } else {
+            mPresenter.requestInList("0", searchStr, null);
+        }
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
             if (view.getId() == R.id.ivHeaderEdit) {
@@ -86,16 +91,34 @@ public class TodayInFragment extends SuperBaseFragment {
     @Subscribe
     public void onEvent(SaveLogEvent event) {
         if ("2".equals(event.direction)) {
-            mPresenter.requestInList("0", null, null);
+            mPresenter.requestInList("0", searchStr, null);
+        }
+    }
+
+    public String searchStr = null;
+
+    @Subscribe
+    public void onEvent(EditSearchEvent event) {
+        if (event.pos == 0) {
+            searchStr = event.search;
+            mPresenter.requestInList("0", event.search, null);
         }
     }
 
     @Override
     public void refreshStart() {
+        searchStr = null;
         mPresenter.requestInList("0", null, null);
     }
 
+    public InListBean bean;
+
     public void responseInList(InListBean bean) {
+        this.bean = bean;
+        initInList(bean);
+    }
+
+    private void initInList(InListBean bean) {
         responseSuccess();
         generateData(bean.list);
         mAdapter.setNewData(mEntityList);
@@ -115,7 +138,7 @@ public class TodayInFragment extends SuperBaseFragment {
     }
 
     public void responseNote(BaseBean bean) {
-        mPresenter.requestInList("0", null, null);
+        mPresenter.requestInList("0", searchStr, null);
     }
 
     public void responseOut(CallOutBean bean) {

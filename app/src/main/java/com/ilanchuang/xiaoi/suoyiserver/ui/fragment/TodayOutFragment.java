@@ -8,6 +8,7 @@ import com.ilanchuang.xiaoi.suoyiserver.R;
 import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.EditSearchEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.TodayOutPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
@@ -58,7 +59,11 @@ public class TodayOutFragment extends SuperBaseFragment {
         }
 
         showLoading();
-        mPresenter.requestOutList("0", null, null);
+        if (this.bean != null) {
+            responseOutList(this.bean);
+        } else {
+            mPresenter.requestOutList("0", searchStr, null);
+        }
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
             if (view.getId() == R.id.ivHeaderEdit) {
@@ -86,13 +91,24 @@ public class TodayOutFragment extends SuperBaseFragment {
 
     @Override
     public void refreshStart() {
+        searchStr = null;
         mPresenter.requestOutList("0", null, null);
     }
 
     @Subscribe
     public void onEvent(SaveLogEvent event) {
         if ("1".equals(event.direction)) {
-            mPresenter.requestOutList("0", null, null);
+            mPresenter.requestOutList("0", searchStr, null);
+        }
+    }
+
+    public String searchStr = null;
+
+    @Subscribe
+    public void onEvent(EditSearchEvent event) {
+        if (event.pos == 1) {
+            searchStr = event.search;
+            mPresenter.requestOutList("0", event.search, null);
         }
     }
 
@@ -110,7 +126,7 @@ public class TodayOutFragment extends SuperBaseFragment {
     }
 
     public void responseNote(BaseBean bean) {
-        mPresenter.requestOutList("0", null, null);
+        mPresenter.requestOutList("0", searchStr, null);
     }
 
     public void responseOut(CallOutBean bean) {
@@ -119,7 +135,14 @@ public class TodayOutFragment extends SuperBaseFragment {
                 .CALL_MEDIA_TYPE_VIDEO, bean);
     }
 
+    public InListBean bean;
+
     public void responseOutList(InListBean bean) {
+        this.bean = bean;
+        intiOutList(bean);
+    }
+
+    private void intiOutList(InListBean bean) {
         responseSuccess();
         generateData(bean.list);
         mAdapter.setNewData(mEntityList);

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.EditSearchEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.MainPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.activity.LoginActivity;
@@ -38,7 +39,6 @@ import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.ui.adapter.BaseViewPagerFragmentAdapter;
 import top.jplayer.baseprolibrary.utils.ActivityUtils;
 import top.jplayer.baseprolibrary.utils.KeyboardUtils;
-import top.jplayer.baseprolibrary.utils.ToastUtils;
 import top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView;
 
 public class MainActivity extends SuperBaseActivity {
@@ -104,9 +104,10 @@ public class MainActivity extends SuperBaseActivity {
         mIvToolLeft.setOnClickListener(v -> mDrawer.openDrawer(Gravity.START));
         mEditSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                ToastUtils.init().showQuickToast("快快");
                 KeyboardUtils.init().hideKeyboard(this, mEditSearch);
                 mEditSearch.clearFocus();
+                EventBus.getDefault().post(new EditSearchEvent(mTabLayout.getSelectedTabPosition(), mEditSearch
+                        .getText().toString()));
             }
             return false;
         });
