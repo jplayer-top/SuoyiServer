@@ -8,11 +8,15 @@ import com.ilanchuang.xiaoi.suoyiserver.R;
 import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.TodayInPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogNote;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +53,9 @@ public class TodayInFragment extends SuperBaseFragment {
         mAdapter = new TodayInAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
         mPresenter = new TodayInPresenter(this);
+        EventBus.getDefault().register(this);
         showLoading();
-        mPresenter.requestInList("1", null, null);
+        mPresenter.requestInList("0", null, null);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
             if (view.getId() == R.id.ivHeaderEdit) {
@@ -64,8 +69,6 @@ public class TodayInFragment extends SuperBaseFragment {
                 AndPermission.with(this)
                         .permission(Permission.CAMERA, Permission.RECORD_AUDIO)
                         .onGranted(permissions -> {
-//                            RongCallKit.startSingleCall(mActivity, "d_10017", RongCallKit.CallMediaType
-//                                    .CALL_MEDIA_TYPE_VIDEO);
                             mPresenter.requestOut(listBean.fid + "");
                         })
                         .onDenied(permissions -> {
@@ -78,9 +81,16 @@ public class TodayInFragment extends SuperBaseFragment {
         });
     }
 
+    @Subscribe
+    public void onEvent(SaveLogEvent event) {
+        if ("2".equals(event.direction)) {
+            mPresenter.requestInList("0", null, null);
+        }
+    }
+
     @Override
     public void refreshStart() {
-        mPresenter.requestInList("1", null, null);
+        mPresenter.requestInList("0", null, null);
     }
 
     public void responseInList(InListBean bean) {
@@ -103,13 +113,18 @@ public class TodayInFragment extends SuperBaseFragment {
     }
 
     public void responseNote(BaseBean bean) {
-        mPresenter.requestInList("1", null, null);
+        mPresenter.requestInList("0", null, null);
     }
 
     public void responseOut(CallOutBean bean) {
         SYSApplication.callOutBean = bean;
         CustomRongCallKit.startSingleCall(mActivity, bean.family.duid, RongCallKit.CallMediaType
-                .CALL_MEDIA_TYPE_VIDEO,bean);
+                .CALL_MEDIA_TYPE_VIDEO, bean);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

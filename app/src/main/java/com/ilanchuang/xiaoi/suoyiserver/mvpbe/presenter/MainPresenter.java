@@ -27,11 +27,13 @@ public class MainPresenter extends BasePresenter<MainActivity> {
         mModel = new ServerModel(SYServer.class);
     }
 
-    public void requestTypeNum() {
+
+
+    public void requestTypeNum(boolean isFlush) {
         mModel.requestTypeNum().subscribe(new NetCallBackObserver<TypeNumBean>() {
             @Override
             public void responseSuccess(TypeNumBean typeNumBean) {
-                mIView.responseTypeNum(typeNumBean);
+                mIView.responseTypeNum(typeNumBean,isFlush);
             }
 
             @Override
@@ -47,7 +49,23 @@ public class MainPresenter extends BasePresenter<MainActivity> {
             public void responseSuccess(BaseBean bean) {
                 SharePreUtil.saveData(mIView, "login_account", "");
                 SharePreUtil.saveData(mIView, "login_password", "");
-             mIView.logout();
+                mIView.logout();
+            }
+
+            @Override
+            public void responseFail(BaseBean bean) {
+
+            }
+        });
+    }
+
+    public void requestOnline(String online) {
+        mModel.requestOnline(online).subscribe(new NetCallBackObserver<BaseBean>(new LoadingImplTip(mIView)) {
+            @Override
+            public void responseSuccess(BaseBean bean) {
+                SharePreUtil.saveData(mIView, "login_account", "");
+                SharePreUtil.saveData(mIView, "login_password", "");
+                mIView.logout();
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe.model;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
@@ -8,7 +9,8 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.RecordUserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import top.jplayer.baseprolibrary.mvp.model.BaseModel;
@@ -73,6 +75,14 @@ public class ServerModel extends BaseModel<SYServer> {
 
     public Observable<HealthDataBean> requestDate(String fid) {
         return mServer.requestData(fid).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<BaseBean> requestOnline(String online) {
+        return mServer.requestOnOff(online).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<BaseBean> requestSaveLog(Map<String, String> map) {
+        return mServer.requestSaveLog(map).compose(new IoMainSchedule<>());
     }
 
     public Observable<LoginBean> requestLogin(String account, String password) {

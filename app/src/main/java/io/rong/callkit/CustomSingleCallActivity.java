@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -22,14 +23,18 @@ import com.bumptech.glide.Glide;
 import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallInfo;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallMessageOrder;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallMessageRecode;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.rong.calllib.CallUserProfile;
 import io.rong.calllib.RongCallClient;
@@ -45,6 +50,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
+import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
 
@@ -70,6 +76,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     private ConstraintLayout mCustomCall;
     private ImageView mIvCallInfo;
     private ImageView mIvCallMessage;
+    private Map<String, String> mStringMap;
 
     @Override
     final public boolean handleMessage(Message msg) {
@@ -86,6 +93,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         super.onCreate(savedInstanceState);
         setContentView(com.ilanchuang.xiaoi.suoyiserver.R.layout.rc_voip_activity_single_call);
         Intent intent = getIntent();
+        mStringMap = new ArrayMap<>();
         mLPreviewContainer = findViewById(R.id.rc_voip_call_large_preview);
         mSPreviewContainer = findViewById(R.id.rc_voip_call_small_preview);
         mButtonContainer = findViewById(R.id.rc_voip_btn);
@@ -342,8 +350,6 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     private void customInCall() {
         RongCallSession callSession = RongCallClient.getInstance().getCallSession();
         String targetId = callSession.getTargetId();
-        // TODO: 2018/10/11
-        targetId = "d_10017";
         new ServerModel(SYServer.class)
                 .requestIn(targetId.replace("u", "d"))
                 .compose(new IoMainSchedule<>())
@@ -351,6 +357,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
                     @Override
                     public void responseSuccess(CallOutBean callOutBean) {
                         initCallInfo(callOutBean);
+                        saveLog(callOutBean, "2");
                     }
 
                     @Override
@@ -368,6 +375,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llCallOk).setVisibility(View.GONE);
         TextView tvCallError = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvCallError);
         tvCallError.setText("取消");
+        saveLog(bean, "1");
+
     }
 
     private void initCallConnect() {
@@ -390,6 +399,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     }
 
     private void initCallInfo(CallOutBean bean) {
+
+
         mCustomCall.setVisibility(View.VISIBLE);
         mIvCallMessage.setVisibility(View.GONE);
         mIvCallInfo.setVisibility(View.GONE);
@@ -425,6 +436,47 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llCallOk).setOnClickListener(v -> {
             onReceiveBtnClick(v);
             voiceCall = false;
+        });
+    }
+
+    private void saveLog(CallOutBean bean, String direction) {
+        if (mStringMap != null) {
+            mStringMap.clear();
+        } else {
+            mStringMap = new ArrayMap<>();
+        }
+        mStringMap.put("callType", "2");//1语音通话 2视频通话
+        mStringMap.put("direction", direction);//1发出 2接收
+        mStringMap.put("logId", bean.logId + "");
+        mStringMap.put("duid", "d_" + bean.family.duid);
+    }
+
+    private void hangupListener(RongCallSession callSession, RongCallCommon.CallDisconnectedReason reason) {
+        String flag;
+        if (reason == RongCallCommon.CallDisconnectedReason.CANCEL ||
+                reason == RongCallCommon.CallDisconnectedReason.REJECT) {
+            flag = "reject";
+        } else if (reason == RongCallCommon.CallDisconnectedReason.HANGUP) {
+            flag = "hungup";
+        } else if (reason == RongCallCommon.CallDisconnectedReason.REMOTE_CANCEL ||
+                reason == RongCallCommon.CallDisconnectedReason.REMOTE_REJECT) {
+            flag = "reject2";
+        } else if (reason == RongCallCommon.CallDisconnectedReason.REMOTE_HANGUP) {
+            flag = "hungup2";
+        } else {
+            flag = "busy";
+        }
+        mStringMap.put("flag", flag);
+        new ServerModel(SYServer.class).requestSaveLog(mStringMap).subscribe(new NetCallBackObserver<BaseBean>() {
+            @Override
+            public void responseSuccess(BaseBean bean) {
+                EventBus.getDefault().post(new SaveLogEvent(mStringMap.get("direction")));
+            }
+
+            @Override
+            public void responseFail(BaseBean bean) {
+
+            }
         });
     }
 
@@ -691,6 +743,9 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         String senderId;
         String extra = "";
         isFinishing = true;
+
+        hangupListener(callSession, reason);
+
         if (callSession == null) {
             RLog.e(TAG, "onCallDisconnected. callSession is null!");
             postRunnableDelay(new Runnable() {
@@ -716,7 +771,6 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
                 showShortToast(getString(io.rong.callkit.R.string.rc_voip_call_other));
                 break;
         }
-
         if (!TextUtils.isEmpty(senderId)) {
             CallSTerminateMessage message = new CallSTerminateMessage();
             message.setReason(reason);
@@ -732,6 +786,8 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
                 RongIM.getInstance().insertIncomingMessage(Conversation.ConversationType.PRIVATE, callSession.getTargetId(), senderId, receivedStatus, message, null);
             }
         }
+
+
         postRunnableDelay(new Runnable() {
             @Override
             public void run() {
@@ -739,6 +795,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             }
         });
     }
+
 
     @Override
     public void onRestoreFloatBox(Bundle bundle) {

@@ -1,6 +1,7 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
@@ -8,6 +9,7 @@ import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
 import top.jplayer.baseprolibrary.mvp.contract.BasePresenter;
 import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
+import top.jplayer.baseprolibrary.net.tip.LoadingImplTip;
 import top.jplayer.baseprolibrary.net.tip.PostImplTip;
 
 /**
@@ -35,6 +37,19 @@ public class LinkListPresenter extends BasePresenter<LinkListFragment> {
 
             @Override
             public void responseFail(InListBean inListBean) {
+
+            }
+        });
+    }
+    public void requestOut(String fid) {
+        mModel.requestOut(fid).subscribe(new NetCallBackObserver<CallOutBean>(new LoadingImplTip(mIView.mActivity)) {
+            @Override
+            public void responseSuccess(CallOutBean bean) {
+                mIView.responseOut(bean);
+            }
+
+            @Override
+            public void responseFail(CallOutBean bean) {
 
             }
         });

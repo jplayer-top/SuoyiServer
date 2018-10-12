@@ -1,18 +1,21 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe;
 
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.RecordUserInfoBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.UserInfoBean;
-import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 
 /**
@@ -56,6 +59,9 @@ public interface SYServer {
 
     @POST("serv/user/login?")
     Observable<LoginBean> requestLogin(@Query("account") String account, @Query("password") String password);
+
+    @POST("serv/call/saveLog")
+    Observable<BaseBean> requestSaveLog(@QueryMap Map<String, String> map);
 
     @POST("serv/user/info?")
     Observable<UserInfoBean> requestUserInfo();

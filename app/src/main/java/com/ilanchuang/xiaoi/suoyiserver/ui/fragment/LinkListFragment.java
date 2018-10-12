@@ -5,17 +5,24 @@ import android.widget.EditText;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.ilanchuang.xiaoi.suoyiserver.R;
+import com.ilanchuang.xiaoi.suoyiserver.SYSApplication;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.LinkListPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.adapter.TodayInAdapter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogNote;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.rong.callkit.CustomRongCallKit;
+import io.rong.callkit.RongCallKit;
 import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.ui.fragment.SuperBaseFragment;
+import top.jplayer.baseprolibrary.utils.ToastUtils;
 
 /**
  * Created by Obl on 2018/9/21.
@@ -45,14 +52,25 @@ public class LinkListFragment extends SuperBaseFragment {
         showLoading();
         mPresenter.requestLinkList("0", null);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (view.getId() == R.id.ivHeaderEdit) {
                 InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
+            if (view.getId() == R.id.ivHeaderEdit) {
                 mDialogNote = new DialogNote(this.getContext()).setFName(listBean.fname).setFAvatar(listBean.favatar);
                 mDialogNote.show(R.id.btnSave, view1 -> {
                     EditText editText = (EditText) view1;
                     mDialogNote.dismiss();
                     mPresenter.requestNote(listBean.fid + "", editText.getText().toString());
                 });
+            }else {
+                AndPermission.with(this)
+                        .permission(Permission.CAMERA, Permission.RECORD_AUDIO)
+                        .onGranted(permissions -> {
+                            mPresenter.requestOut(listBean.fid + "");
+                        })
+                        .onDenied(permissions -> {
+                            AndPermission.hasAlwaysDeniedPermission(mActivity, permissions);
+                            ToastUtils.init().showQuickToast("请前往应用设置，同意权限");
+                        })
+                        .start();
             }
             return false;
         });
@@ -86,5 +104,11 @@ public class LinkListFragment extends SuperBaseFragment {
         responseSuccess();
         generateData(inListBean.list);
         mAdapter.setNewData(mEntityList);
+    }
+
+    public void responseOut(CallOutBean bean) {
+        SYSApplication.callOutBean = bean;
+        CustomRongCallKit.startSingleCall(mActivity, bean.family.duid, RongCallKit.CallMediaType
+                .CALL_MEDIA_TYPE_VIDEO,bean);
     }
 }

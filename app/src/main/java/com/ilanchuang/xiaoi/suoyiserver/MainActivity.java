@@ -16,11 +16,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.MainPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.activity.LoginActivity;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayInFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayOutFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
+import io.rong.imkit.RongIM;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
 import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.ui.adapter.BaseViewPagerFragmentAdapter;
@@ -78,6 +83,12 @@ public class MainActivity extends SuperBaseActivity {
     ImageView mIvIsOnLine;
     @BindView(R.id.llIsOnLine)
     LinearLayout mLlIsOnLine;
+    @BindView(R.id.llOnline)
+    LinearLayout mLlOnline;
+    @BindView(R.id.llOutline)
+    LinearLayout mLlOutline;
+    @BindView(R.id.llShowOnline)
+    LinearLayout mLlShowOnline;
     private Unbinder mBind;
     private MainPresenter mPresenter;
 
@@ -85,9 +96,10 @@ public class MainActivity extends SuperBaseActivity {
     public void initRootData(View view) {
         super.initRootData(view);
         mBind = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mPresenter = new MainPresenter(this);
-        mPresenter.requestTypeNum();
+        mPresenter.requestTypeNum(false);
         mIvToolLeft.setImageResource(R.drawable.main_user);
         mIvToolLeft.setOnClickListener(v -> mDrawer.openDrawer(Gravity.START));
         mEditSearch.setOnEditorActionListener((v, actionId, event) -> {
@@ -110,8 +122,17 @@ public class MainActivity extends SuperBaseActivity {
             mPresenter.requestLogout();
         });
         mLlIsOnLine.setOnClickListener(v -> {
-//            RongCallKit.startSingleCall(mActivity, "d_10017", RongCallKit.CallMediaType
-//                    .CALL_MEDIA_TYPE_VIDEO);
+            mLlShowOnline.setVisibility(mLlShowOnline.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        });
+        mLlOnline.setOnClickListener(v -> {
+            SYSApplication.connectRongIm(SYSApplication.imToken);
+            mLlShowOnline.setVisibility(View.GONE);
+            mTvIsOnLine.setText("在线");
+        });
+        mLlOutline.setOnClickListener(v -> {
+            RongIM.getInstance().disconnect();
+            mLlShowOnline.setVisibility(View.GONE);
+            mTvIsOnLine.setText("离线");
         });
     }
 
@@ -132,24 +153,44 @@ public class MainActivity extends SuperBaseActivity {
         return false;
     }
 
+    @Subscribe
+    public void onEvent(SaveLogEvent event) {
+        mPresenter.requestTypeNum(true);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mBind.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
-    public void responseTypeNum(TypeNumBean bean) {
-        ArrayMap<String, Fragment> map = new ArrayMap<>();
-        map.put("今日呼入(" + bean.in + ")", new TodayInFragment());
-        map.put("今日呼出(" + bean.out + ")", new TodayOutFragment());
-        map.put("用户列表(" + bean.linkman + ")", new LinkListFragment());
-        mViewPager.setAdapter(new BaseViewPagerFragmentAdapter<>(getSupportFragmentManager(), map));
-        mTabLayout.setupWithViewPager(mViewPager);
+    public void responseTypeNum(TypeNumBean bean, boolean isFlush) {
+        if (isFlush) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(0);
+            if (tab != null) {
+                tab.setText("今日呼入(" + bean.in + ")");
+            }
+            TabLayout.Tab tab1 = mTabLayout.getTabAt(1);
+            if (tab1 != null) {
+                tab1.setText("今日呼出(" + bean.out + ")");
+            }
+            TabLayout.Tab tab2 = mTabLayout.getTabAt(2);
+            if (tab2 != null) {
+                tab2.setText("用户列表(" + bean.linkman + ")");
+            }
+        } else {
+            ArrayMap<String, Fragment> map = new ArrayMap<>();
+            map.put("今日呼入(" + bean.in + ")", new TodayInFragment());
+            map.put("今日呼出(" + bean.out + ")", new TodayOutFragment());
+            map.put("用户列表(" + bean.linkman + ")", new LinkListFragment());
+            mViewPager.setAdapter(new BaseViewPagerFragmentAdapter<>(getSupportFragmentManager(), map));
+            mTabLayout.setupWithViewPager(mViewPager);
+        }
     }
 
     public void logout() {
         ActivityUtils.init().start(this, LoginActivity.class);
         Observable.timer(1, TimeUnit.SECONDS).subscribe(aLong -> finish());
     }
-
 }

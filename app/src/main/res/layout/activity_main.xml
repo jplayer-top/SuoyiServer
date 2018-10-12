@@ -5,28 +5,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/layout_toolbar_common"/>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/whiteF8"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@color/color333">
-        </android.support.design.widget.TabLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+            <include layout="@layout/layout_toolbar_common"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@color/whiteF8"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextColor="@color/color333">
+            </android.support.design.widget.TabLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llShowOnline"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dimen_5dp"
+            android:layout_marginTop="@dimen/dimen_85dp"
+            android:background="@drawable/main_online"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/llOnline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_40dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_15dp"
+                    android:layout_height="@dimen/dimen_15dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:src="@drawable/main_is_online"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="在线"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white"/>
+
+            <LinearLayout
+                android:id="@+id/llOutline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_40dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_15dp"
+                    android:layout_height="@dimen/dimen_15dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:src="@drawable/main_is_outline"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="离线"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
 
     <include layout="@layout/layout_main_left"/>
+
+
 </android.support.v4.widget.DrawerLayout>
