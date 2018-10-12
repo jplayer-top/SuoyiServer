@@ -53,7 +53,9 @@ public class TodayInFragment extends SuperBaseFragment {
         mAdapter = new TodayInAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
         mPresenter = new TodayInPresenter(this);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         showLoading();
         mPresenter.requestInList("0", null, null);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {

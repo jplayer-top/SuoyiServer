@@ -53,7 +53,10 @@ public class TodayOutFragment extends SuperBaseFragment {
         mAdapter = new TodayInAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
         mPresenter = new TodayOutPresenter(this);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         showLoading();
         mPresenter.requestOutList("0", null, null);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
