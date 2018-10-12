@@ -80,5 +80,6 @@ dependencies {
     implementation files('libs/MiPush_SDK_Client_3_5_1.jar')
     implementation 'com.huawei.android.hms:push:2.5.3.305'
     implementation 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

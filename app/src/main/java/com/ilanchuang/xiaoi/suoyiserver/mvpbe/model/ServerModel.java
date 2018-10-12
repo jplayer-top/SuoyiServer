@@ -2,6 +2,7 @@ package com.ilanchuang.xiaoi.suoyiserver.mvpbe.model;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.InListBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.LoginBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.RecordUserInfoBean;
@@ -68,6 +69,10 @@ public class ServerModel extends BaseModel<SYServer> {
 
     public Observable<CallMessageBean> requestCallMessage(String fid) {
         return mServer.requestUserMessage(fid).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<HealthDataBean> requestDate(String rid) {
+        return mServer.requestData(rid).compose(new IoMainSchedule<>());
     }
 
     public Observable<LoginBean> requestLogin(String account, String password) {

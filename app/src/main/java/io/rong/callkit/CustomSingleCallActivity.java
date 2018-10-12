@@ -25,6 +25,7 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallInfo;
 import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallMessageOrder;
+import com.ilanchuang.xiaoi.suoyiserver.ui.dialog.DialogCallMessageRecode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -376,6 +377,13 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         mIvCallMessage.setOnClickListener(v -> {
             if (SYSApplication.type.contains("客服")) {
                 new DialogCallMessageOrder(this).setFid(fid, fname).show();
+            } else {
+                DialogCallMessageRecode dialogCallMessageRecode = new DialogCallMessageRecode();
+                Bundle args = new Bundle();
+                args.putString("fid", fid);
+                args.putString("fname", fname);
+                dialogCallMessageRecode.setArguments(args);
+                dialogCallMessageRecode.show(getSupportFragmentManager(), "");
             }
         });
         mIvCallInfo.setOnClickListener(v -> new DialogCallInfo(this).setFid(fid, fname).show());

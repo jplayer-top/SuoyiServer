@@ -1,11 +1,11 @@
 package io.rong.callkit;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 import io.rong.imkit.RongConfigurationManager;
 
-public class BaseNoActionBarActivity extends Activity {
+public class BaseNoActionBarActivity extends FragmentActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         Context newContext = RongConfigurationManager.getInstance().getConfigurationContext(newBase);
