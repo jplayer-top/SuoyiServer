@@ -71,8 +71,8 @@ public class ServerModel extends BaseModel<SYServer> {
         return mServer.requestUserMessage(fid).compose(new IoMainSchedule<>());
     }
 
-    public Observable<HealthDataBean> requestDate(String rid) {
-        return mServer.requestData(rid).compose(new IoMainSchedule<>());
+    public Observable<HealthDataBean> requestDate(String fid) {
+        return mServer.requestData(fid).compose(new IoMainSchedule<>());
     }
 
     public Observable<LoginBean> requestLogin(String account, String password) {

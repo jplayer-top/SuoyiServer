@@ -46,7 +46,7 @@ public interface SYServer {
     Observable<TypeNumBean> requestTypeNum();
 
     @GET("serv/health/reportlst30?")
-    Observable<HealthDataBean> requestData(@Query("rid") String rid);
+    Observable<HealthDataBean> requestData(@Query("fid") String rid);
 
     @GET("serv/user/onoff?")
     Observable<BaseBean> requestOnOff(@Query("online") String online);
@@ -65,7 +65,4 @@ public interface SYServer {
 
     @GET("serv/call/detail?")
     Observable<CallMessageBean> requestUserMessage(@Query("fid") String fid);
-
-    @GET("serv/call/detail?")
-    Observable<CallMessageBean> requestUserMessage(@Query("fid") String fid, @Query("type") String type);
 }

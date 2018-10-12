@@ -3,6 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="@color/white"
              android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
@@ -22,161 +23,21 @@
             android:paddingTop="@dimen/dimen_67dp"
             android:showDividers="middle">
 
-            <TextView
-                android:id="@+id/tvReportTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_15dp"
-                android:gravity="center"
-                android:textColor="@color/color666"
-                android:textSize="@dimen/dimen_13sp"/>
             <!--血压-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_15dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_1dp"
-                        android:layout_centerInParent="true"
-                        android:background="#f0f0f0"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@color/white"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingRight="@dimen/dp_10"
-                        android:text="本周血压"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_18sp"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/pressureTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/health_week_icon1"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:padding="@dimen/dimen_5dp"
-                    android:text="血压正常"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_30dp"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:layout_marginRight="@dimen/dp_40"
-                    android:layout_marginTop="@dimen/dimen_30dp"
-                    android:orientation="horizontal">
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="高血压平均值"
-                            android:textColor="@color/color999"/>
-
-                        <TextView
-                            android:id="@+id/pressureAvgH"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:gravity="center"
-                            android:text="--mmHg"
-                            android:textColor="@color/color333"/>
-
-                        <TextView
-                            android:id="@+id/pressureAvgHStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="状态"
-                            android:textColor="@color/colorff9c00"/>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_divider"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="低血压平均值"
-                            android:textColor="@color/color999"/>
-
-                        <TextView
-                            android:id="@+id/pressureAvgL"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:gravity="center"
-                            android:text="--mmHg"
-                            android:textColor="@color/color333"/>
-
-                        <TextView
-                            android:id="@+id/pressureAvgLStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="状态"
-                            android:textColor="@color/colorff9c00"/>
-                    </LinearLayout>
-                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:text="血压趋势"
+                    android:layout_marginStart="@dimen/dimen_15dp"
+                    android:gravity="center_vertical"
+                    android:text="近期血压（mmHg）"
                     android:textColor="@color/color333"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <TextView
-                    android:id="@+id/tvBloodTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:gravity="center"
-                    android:text="本周有X天测量过血压"
-                    android:textColor="@color/color999"
                     android:textSize="@dimen/dimen_14sp"/>
 
                 <com.github.mikephil.charting.charts.BarChart
@@ -193,102 +54,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_15dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_1dp"
-                        android:layout_centerInParent="true"
-                        android:background="#f0f0f0"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@color/white"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingRight="@dimen/dp_10"
-                        android:text="本周心率"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_18sp"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/heartTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/health_week_icon"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:padding="@dimen/dimen_5dp"
-                    android:text="心率正常"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_30dp"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:layout_marginRight="@dimen/dp_40"
-                    android:layout_marginTop="@dimen/dimen_30dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_divider"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_46dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:id="@+id/heartAvg"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="心率平均值 : --bpm"/>
-
-                        <TextView
-                            android:id="@+id/heartAvgStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|right"
-                            android:text="状态"
-                            android:textColor="@color/colorff9c00"/>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:background="@drawable/shape_divider"/>
-                </RelativeLayout>
-
                 <TextView
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:text="心率趋势"
+                    android:layout_marginStart="@dimen/dimen_15dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_vertical"
+                    android:text="近期心率（bmp）"
                     android:textColor="@color/color333"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <TextView
-                    android:id="@+id/tvHeartTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:gravity="center"
-                    android:text="本周有X天测量过心率"
-                    android:textColor="@color/color999"
                     android:textSize="@dimen/dimen_14sp"/>
 
                 <com.github.mikephil.charting.charts.LineChart
@@ -304,155 +79,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_15dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_1dp"
-                        android:layout_centerInParent="true"
-                        android:background="#f0f0f0"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@color/white"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingRight="@dimen/dp_10"
-                        android:text="本周血糖"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_18sp"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/glucoseTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/health_week_icon1"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:padding="@dimen/dimen_5dp"
-                    android:text="血糖正常"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_30dp"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:layout_marginRight="@dimen/dp_40"
-                    android:layout_marginTop="@dimen/dimen_30dp"
-                    android:orientation="horizontal">
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="餐前血糖平均值"
-                            android:textColor="@color/color999"/>
-
-                        <TextView
-                            android:id="@+id/glucoseAvgB"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:gravity="center"
-                            android:text="--mmol/L"
-                            android:textColor="@color/color333"/>
-
-                        <TextView
-                            android:id="@+id/glucoseAvgBStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="状态"
-                            android:textColor="@color/colorff9c00"/>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_divider"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="餐后血糖平均值"
-                            android:textColor="@color/color999"/>
-
-                        <TextView
-                            android:id="@+id/glucoseAvgA"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_20dp"
-                            android:gravity="center"
-                            android:text="--mmol/L"
-                            android:textColor="@color/color333"/>
-
-                        <TextView
-                            android:id="@+id/glucoseAvgAStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="状态"
-                            android:textColor="@color/colorff9c00"/>
-                    </LinearLayout>
-                </LinearLayout>
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:text="血糖趋势"
+                    android:layout_marginStart="@dimen/dimen_15dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_vertical"
+                    android:text="近期血糖（mmol/L）"
                     android:textColor="@color/color333"
                     android:textSize="@dimen/dimen_14sp"/>
-
-                <TextView
-                    android:id="@+id/tvSugerTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:gravity="center"
-                    android:text="本周有X天测量过血糖"
-                    android:textColor="@color/color999"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <com.github.mikephil.charting.charts.ScatterChart
-                    android:id="@+id/chart3"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_180dp"
-                    android:layout_marginLeft="@dimen/dimen_15dp"
-                    android:layout_marginRight="@dimen/dimen_15dp"
-                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/llDit"
@@ -478,102 +114,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_15dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_1dp"
-                        android:layout_centerInParent="true"
-                        android:background="#f0f0f0"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@color/white"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingRight="@dimen/dp_10"
-                        android:text="本周血氧"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_18sp"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/Q2Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/health_week_icon"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:padding="@dimen/dimen_5dp"
-                    android:text="血氧正常"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_30dp"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:layout_marginRight="@dimen/dp_40"
-                    android:layout_marginTop="@dimen/dimen_30dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_divider"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_46dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:id="@+id/Q2Avg"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="血氧平均值 : --"/>
-
-                        <TextView
-                            android:id="@+id/Q2AvgStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|right"
-                            android:text="状态"
-                            android:textColor="@color/colorff9c00"/>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:background="@drawable/shape_divider"/>
-                </RelativeLayout>
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:text="血氧趋势"
+                    android:layout_marginStart="@dimen/dimen_15dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_vertical"
+                    android:text="近期血氧（%）"
                     android:textColor="@color/color333"
-                    android:textSize="@dimen/dimen_14sp"/>
-
-                <TextView
-                    android:id="@+id/tvQ2Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:gravity="center"
-                    android:text="本周有X天测量过血氧"
-                    android:textColor="@color/color999"
                     android:textSize="@dimen/dimen_14sp"/>
 
                 <com.github.mikephil.charting.charts.LineChart

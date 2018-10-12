@@ -44,7 +44,6 @@ import com.ilanchuang.xiaoi.suoyiserver.ui.utils.MyValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,63 +59,26 @@ import top.jplayer.baseprolibrary.utils.StringUtils;
  */
 
 public class HealthReportFragment extends SuperBaseFragment {
-    @BindView(R.id.tvReportTime)
-    TextView mTvReportTime;
+
     @BindView(R.id.chart1)
     BarChart mChart1;
     @BindView(R.id.chart2)
     LineChart mChart2;
-    @BindView(R.id.chart3)
-    ScatterChart mChart3;
-
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
     @BindView(R.id.llDit)
     LinearLayout mLlDit;
-    @BindView(R.id.tvBloodTitle)
-    TextView mTvBloodTitle;
-    @BindView(R.id.tvHeartTitle)
-    TextView mTvHeartTitle;
-    @BindView(R.id.tvSugerTitle)
-    TextView mTvSugerTitle;
+
 
     @BindView(R.id.scrollView)
     NestedScrollView mScrollView;
-    @BindView(R.id.pressureTitle)
-    TextView mPressureTitle;
-    @BindView(R.id.pressureAvgH)
-    TextView mPressureAvgH;
-    @BindView(R.id.pressureAvgHStatus)
-    TextView mPressureAvgHStatus;
-    @BindView(R.id.pressureAvgL)
-    TextView mPressureAvgL;
-    @BindView(R.id.pressureAvgLStatus)
-    TextView mPressureAvgLStatus;
 
-    @BindView(R.id.heartTitle)
-    TextView mHeartTitle;
-    @BindView(R.id.heartAvg)
-    TextView mHeartAvg;
-    @BindView(R.id.heartAvgStatus)
-    TextView mHeartAvgStatus;
-    @BindView(R.id.glucoseTitle)
-    TextView mGlucoseTitle;
-    @BindView(R.id.glucoseAvgB)
-    TextView mGlucoseAvgB;
-    @BindView(R.id.glucoseAvgBStatus)
-    TextView mGlucoseAvgBStatus;
-    @BindView(R.id.glucoseAvgA)
-    TextView mGlucoseAvgA;
-    @BindView(R.id.glucoseAvgAStatus)
-    TextView mGlucoseAvgAStatus;
-    @BindView(R.id.Q2Title)
-    TextView mQ2Title;
-    @BindView(R.id.Q2Avg)
-    TextView mQ2Avg;
-    @BindView(R.id.Q2AvgStatus)
-    TextView mQ2AvgStatus;
-    @BindView(R.id.tvQ2Title)
-    TextView mTvQ2Title;
+    @BindView(R.id.tvWatchOne)
+    public TextView mTvWatchOne;
+    @BindView(R.id.tvWatchTwo)
+    public TextView mTvWatchTwo;
+    @BindView(R.id.cardSelTab)
+    public CardView mCardSelTab;
     @BindView(R.id.chart5)
     LineChart mChart5;
     private int mHeight;
@@ -124,12 +86,7 @@ public class HealthReportFragment extends SuperBaseFragment {
     private final int WILL_UP = 0;
     private final int WILL_DOWN = 1;
     private final int ING_STATUS = 2;
-    @BindView(R.id.tvWatchOne)
-    public TextView mTvWatchOne;
-    @BindView(R.id.tvWatchTwo)
-    public TextView mTvWatchTwo;
-    @BindView(R.id.cardSelTab)
-    public CardView mCardSelTab;
+
     private int curFragment = 0;
     private List<HealthDataBean.ReportBean> mHealthReportBeanList;
 
@@ -143,14 +100,13 @@ public class HealthReportFragment extends SuperBaseFragment {
         ButterKnife.bind(this, rootView);
         mChart1.setNoDataText("暂无测量数据");
         mChart2.setNoDataText("暂无测量数据");
-        mChart3.setNoDataText("暂无测量数据");
         mChart5.setNoDataText("暂无测量数据");
         Bundle arguments = getArguments();
         if (arguments == null) {
             return;
         }
         new ServerModel(SYServer.class)
-                .requestDate(arguments.getString("rid"))
+                .requestDate(arguments.getString("fid"))
                 .subscribe(new NetCallBackObserver<HealthDataBean>() {
                     @Override
                     public void responseSuccess(HealthDataBean response) {
@@ -240,41 +196,12 @@ public class HealthReportFragment extends SuperBaseFragment {
     }
 
     public void setReport(HealthDataBean.ReportBean reportsBean) {
-        mTvReportTime.setText(reportsBean.title);
         xValue = reportsBean.bloodStatusDataFormatV.cat;
         mSValue = reportsBean.glucoseStatusDataFormatV.get(0).cat;
         initLineChart(mChart2, generateLineData(reportsBean.heartStatusDataFormatV.hr), "近日心率");
         initBarChart(mChart1, generateBarData(reportsBean.bloodStatusDataFormatV.hp,
                 reportsBean.bloodStatusDataFormatV.lp));
         initLineChart(mChart5, generateO2LineData(reportsBean.oxygenDataFormatV.bo), "近日血氧");
-
-        mTvBloodTitle.setText(reportsBean.pressureSub);
-        mPressureTitle.setText(reportsBean.pressureTitle);
-        mPressureAvgH.setText(reportsBean.pressureAvgH);
-        mPressureAvgHStatus.setText(reportsBean.pressureAvgHStatus);
-        mPressureAvgL.setText(reportsBean.pressureAvgL);
-        mPressureAvgLStatus.setText(reportsBean.pressureAvgLStatus);
-        setStatus4View(reportsBean.pressureTitle, mPressureTitle, mPressureAvgHStatus, mPressureAvgLStatus);
-
-        mTvHeartTitle.setText(reportsBean.heartSub);
-        mHeartTitle.setText(reportsBean.heartTitle);
-        mHeartAvgStatus.setText(reportsBean.heartAvgStatus);
-        mHeartAvg.setText(String.format(Locale.CHINA, "心律平均值：%s", reportsBean.heartAvg));
-        setStatus4View(reportsBean.heartTitle, mHeartTitle, mHeartAvgStatus);
-
-        mTvSugerTitle.setText(reportsBean.glucoseSub);
-        mGlucoseAvgA.setText(reportsBean.glucoseAvgA);
-        mGlucoseTitle.setText(reportsBean.glucoseTitle);
-        mGlucoseAvgAStatus.setText(reportsBean.glucoseAvgAStatus);
-        mGlucoseAvgB.setText(reportsBean.glucoseAvgB);
-        mGlucoseAvgBStatus.setText(reportsBean.glucoseAvgBStatus);
-        setStatus4View(reportsBean.glucoseTitle, mGlucoseTitle, mGlucoseAvgAStatus, mGlucoseAvgBStatus);
-
-        mQ2Title.setText(reportsBean.oxygenTitle);
-        mQ2Avg.setText(String.format(Locale.CHINA, "血氧平均值：%s", reportsBean.oxygenAvg));
-        mQ2AvgStatus.setText(reportsBean.oxygenAvgStatus);
-        mTvQ2Title.setText(reportsBean.oxygenSub);
-        setStatus4View(reportsBean.oxygenTitle, mQ2Title, mQ2AvgStatus);
 
         mLlDit.removeAllViews();
         mViewPager.setAdapter(new ChartSugarAdapter(reportsBean.glucoseStatusDataFormatV));
@@ -284,7 +211,7 @@ public class HealthReportFragment extends SuperBaseFragment {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams
                     .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             if (i != 0) {
-                layoutParams.leftMargin = ScreenUtils.getWidthOfScreen(getContext(), 80, 8);
+                layoutParams.leftMargin = ScreenUtils.getWidthOfScreen(getContext(), 100, 8);
             }
             textView.setLayoutParams(layoutParams);
             textView.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(i == 0 ? R.drawable
@@ -292,7 +219,7 @@ public class HealthReportFragment extends SuperBaseFragment {
                     null,
                     null);
             textView.setText(xValue.get(i));
-            textView.setTextSize(11);
+            textView.setTextSize(8);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(Color.parseColor("#999999"));
             mLlDit.addView(textView);
@@ -319,40 +246,6 @@ public class HealthReportFragment extends SuperBaseFragment {
         });
     }
 
-    private void setStatus4View(String pressureTitle, TextView title, TextView hStatus, TextView lStatus) {
-        if (pressureTitle.contains("未测量")) {
-            int color = Color.parseColor("#bebebe");
-            title.setBackgroundResource(R.drawable.health_week_icon2);
-            hStatus.setTextColor(color);
-            lStatus.setTextColor(color);
-        } else if (pressureTitle.contains("正常")) {
-            int color = Color.parseColor("#82c343");
-            hStatus.setTextColor(color);
-            title.setBackgroundResource(R.drawable.health_week_icon1);
-            lStatus.setTextColor(color);
-        } else {//异常
-            int color = Color.parseColor("#ff9c00");
-            hStatus.setTextColor(color);
-            lStatus.setTextColor(color);
-            title.setBackgroundResource(R.drawable.health_week_icon);
-        }
-    }
-
-    private void setStatus4View(String statusT, TextView title, TextView status) {
-        if (statusT.contains("未测量")) {
-            int color = Color.parseColor("#bebebe");
-            title.setBackgroundResource(R.drawable.health_week_icon2);
-            status.setTextColor(color);
-        } else if (statusT.contains("正常")) {
-            int color = Color.parseColor("#82c343");
-            title.setBackgroundResource(R.drawable.health_week_icon1);
-            status.setTextColor(color);
-        } else {//异常
-            int color = Color.parseColor("#ff9c00");
-            title.setBackgroundResource(R.drawable.health_week_icon);
-            status.setTextColor(color);
-        }
-    }
 
     private List<String> mSValue;
     private List<String> xValue;
@@ -389,33 +282,6 @@ public class HealthReportFragment extends SuperBaseFragment {
         mChart.invalidate();
     }
 
-    private void initStepBarChart(BarChart mChart, BarData data) {
-        mChart.getDescription().setEnabled(false);
-        mChart.setTouchEnabled(false);
-        mChart.setDrawValueAboveBar(true);
-        YAxis yAxis = mChart.getAxisLeft();
-        mChart.getAxisRight().setEnabled(false);
-        XAxis xAxis = mChart.getXAxis();
-        setXYAxis(yAxis, xAxis);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return xValue.get((int) value % xValue.size());
-            }
-        });
-        mChart.animateY(1000);
-        Legend l = mChart.getLegend();
-        ArrayList<LegendEntry> custom = new ArrayList<>();
-        LegendEntry entry1 = new LegendEntry();
-        entry1.label = "步数";
-        entry1.formColor = getResources().getColor(R.color.colorPrimary);
-        custom.add(entry1);
-        l.setCustom(custom);
-        setLegend(l);
-        mChart.setData(data);
-        mChart.setFitBars(true);
-        mChart.invalidate();
-    }
 
     private void initScatterChart(ScatterChart mChart, ScatterData data) {
         mChart.setDrawGridBackground(false);
