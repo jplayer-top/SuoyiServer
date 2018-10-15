@@ -7,11 +7,15 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import top.jplayer.baseprolibrary.mvp.model.bean.PickerTimeEvent;
 
 /**
  * Created by Obl on 2018/3/19.
@@ -36,6 +40,7 @@ public class PickerUtils {
                 TextView textView = (TextView) v;
                 textView.setText(getTime(date));
             }
+            EventBus.getDefault().post(new PickerTimeEvent(getTime(date)));
         })
                 //年月日时分秒 的显示与否，不设置则默认全部显示
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -44,21 +49,21 @@ public class PickerUtils {
                 .setDividerColor(Color.DKGRAY)
                 .setContentSize(21)
                 .setDate(selectedDate)
-                .setRangDate(startDate, endDate)
+                .setRangDate(startDate, selectedDate)
 //                .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
                 .setDecorView(null)
                 .build();
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         return format.format(date);
     }
 
     private void initStringPicker(final ArrayList<String> optionsItems, int
             position, Context context) {
         OptionsPickerView optionsPickerView = new OptionsPickerView.Builder(context, (options1, options2,
-                                                                                         options3, v)
+                                                                                      options3, v)
                 -> {
             String value = optionsItems.get(options1);
             if (v != null) {

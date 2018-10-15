@@ -1,5 +1,6 @@
 package com.ilanchuang.xiaoi.suoyiserver;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.EditSearchEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter.MainPresenter;
 import com.ilanchuang.xiaoi.suoyiserver.ui.activity.LoginActivity;
+import com.ilanchuang.xiaoi.suoyiserver.ui.activity.SearchActivity;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayInFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayOutFragment;
@@ -93,6 +95,11 @@ public class MainActivity extends SuperBaseActivity {
     private MainPresenter mPresenter;
 
     @Override
+    protected int initRootLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     public void initRootData(View view) {
         super.initRootData(view);
         mBind = ButterKnife.bind(this, view);
@@ -111,7 +118,8 @@ public class MainActivity extends SuperBaseActivity {
             }
             return false;
         });
-
+        mLlInFind.setOnClickListener(v -> startToSearch("in"));
+        mLlOutFind.setOnClickListener(v -> startToSearch("out"));
         mTvUserName.setText(SYSApplication.name);
         mTvUserType.setText(SYSApplication.type);
         Glide.with(this)
@@ -135,6 +143,14 @@ public class MainActivity extends SuperBaseActivity {
             mLlShowOnline.setVisibility(View.GONE);
             mTvIsOnLine.setText("离线");
         });
+        String version = "版本号：" + BuildConfig.VERSION_NAME;
+        mTvVersion.setText(version);
+    }
+
+    private void startToSearch(String in) {
+        Bundle bundle = new Bundle();
+        bundle.putString("type", in);
+        ActivityUtils.init().start(this, SearchActivity.class, "", bundle);
     }
 
     @Override
@@ -143,11 +159,6 @@ public class MainActivity extends SuperBaseActivity {
         mImmersionBar.titleBar(mToolbar).init();
     }
 
-
-    @Override
-    protected int initRootLayout() {
-        return R.layout.activity_main;
-    }
 
     @Override
     public boolean isSupportSwipeBack() {

@@ -1,0 +1,58 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar_common"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_40dp"
+        android:background="@color/whiteF8"
+        android:padding="@dimen/dimen_5dp">
+
+        <LinearLayout
+            android:id="@+id/llSearchTime"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_white_radius45"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_15dp"
+                android:layout_height="@dimen/dimen_15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:src="@drawable/search"
+                android:tint="@color/color666"/>
+
+            <TextView
+                android:id="@+id/editSearchTime"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_26dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dimen_15dp"
+                android:layout_marginStart="@dimen/dimen_5dp"
+                android:background="@null"
+                android:hint="时间搜索 年月日"
+                android:textColor="@color/color666"
+                android:textColorHint="@color/color666"
+                android:textSize="@dimen/dimen_12sp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivTimeCancel"
+            android:layout_width="@dimen/dimen_15dp"
+            android:layout_height="@dimen/dimen_15dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:src="@drawable/serach_cancel"/>
+    </FrameLayout>
+
+
+    <include layout="@layout/layout_refresh_white_nofoot"/>
+</LinearLayout>
+

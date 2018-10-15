@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.ilanchuang.xiaoi.suoyiserver">
+
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!--拨打电话-->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
@@ -48,6 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTop"
@@ -187,6 +192,8 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
+
         <receiver
             android:name="io.rong.message.NotificationReceive"
             android:exported="true">
