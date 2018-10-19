@@ -22,6 +22,7 @@ public class InListBean extends BaseBean {
      */
 
     public int total;
+    public boolean more;
     public List<ListBean> list;
 
     public static final int LEVEL_0 = 0;

@@ -18,7 +18,7 @@ ext {
     ]
     url = [
             "debug"  : "https://dev.xiaoyi99.com/v2/",
-            "release": "https://app.xiaoyi99.com/",
+            "release": "https://app.xiaoyi99.com/v2/",
     ]
     key_rong = [
             "debug"  : "qf3d5gbjqfauh",

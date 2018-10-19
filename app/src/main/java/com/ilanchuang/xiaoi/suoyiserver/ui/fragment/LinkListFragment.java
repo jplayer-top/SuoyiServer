@@ -44,7 +44,7 @@ public class LinkListFragment extends SuperBaseFragment {
 
     @Override
     public int initLayout() {
-        return R.layout.layout_refresh_white_nofoot;
+        return R.layout.layout_refresh_white_hasfoot;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LinkListFragment extends SuperBaseFragment {
         if (this.bean != null) {
             responseLinkList(this.bean);
         } else {
-            mPresenter.requestLinkList("0", searchStr);
+            mPresenter.requestLinkList(pagNum + "", searchStr);
         }
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             InListBean.ListBean listBean = (InListBean.ListBean) mAdapter.getData().get(position);
@@ -85,21 +85,32 @@ public class LinkListFragment extends SuperBaseFragment {
             }
             return false;
         });
+        mSmartRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            if (isLoaddigMore) {
+                ++pagNum;
+                mPresenter.requestLinkList(pagNum + "", searchStr);
+            } else {
+                mSmartRefreshLayout.finishLoadMore(1000);
+                ToastUtils.init().showQuickToast("暂无更多数据");
+            }
+        });
     }
 
     public String searchStr = null;
+    public int pagNum = 1;
 
     @Subscribe
     public void onEvent(EditSearchEvent event) {
         if (event.pos == 2) {
             searchStr = event.search;
-            mPresenter.requestLinkList("0", event.search);
+            mPresenter.requestLinkList(pagNum + "", event.search);
         }
     }
 
     @Override
     public void refreshStart() {
         searchStr = null;
+        pagNum = 1;
         mPresenter.requestLinkList("1", null);
     }
 
@@ -118,13 +129,16 @@ public class LinkListFragment extends SuperBaseFragment {
     }
 
     public void responseNote(BaseBean bean) {
-        mPresenter.requestLinkList("1", searchStr);
+        mPresenter.requestLinkList("" + pagNum, searchStr);
     }
 
     public InListBean bean;
+    public boolean isLoaddigMore = false;
 
     public void responseLinkList(InListBean inListBean) {
+        mSmartRefreshLayout.finishLoadMore();
         this.bean = inListBean;
+        isLoaddigMore = inListBean.more;
         initLinkList(inListBean);
     }
 
