@@ -115,19 +115,6 @@ public class LinkListFragment extends SuperBaseFragment {
     }
 
 
-    private void generateData(List<InListBean.ListBean> listBeans) {
-        if (mEntityList != null) {
-            mEntityList.clear();
-        } else {
-            mEntityList = new ArrayList<>();
-        }
-        Observable.fromIterable(listBeans).subscribe(listBean -> {
-            mEntityList.add(listBean);
-            Observable.fromIterable(listBean.notes).subscribe(listBean::addSubItem);
-            listBean.removeSubItem(0);
-        });
-    }
-
     public void responseNote(BaseBean bean) {
         mPresenter.requestLinkList("" + pagNum, searchStr);
     }
@@ -150,8 +137,34 @@ public class LinkListFragment extends SuperBaseFragment {
 
     private void initLinkList(InListBean inListBean) {
         responseSuccess();
-        generateData(inListBean.list);
-        mAdapter.setNewData(mEntityList);
+        if (pagNum > 1) {
+            generateAddData(inListBean.list);
+            mAdapter.setNewData(mEntityList);
+        } else {
+            generateData(inListBean.list);
+            mAdapter.setNewData(mEntityList);
+        }
+    }
+
+    private void generateData(List<InListBean.ListBean> listBeans) {
+        if (mEntityList != null) {
+            mEntityList.clear();
+        } else {
+            mEntityList = new ArrayList<>();
+        }
+        Observable.fromIterable(listBeans).subscribe(listBean -> {
+            mEntityList.add(listBean);
+            Observable.fromIterable(listBean.notes).subscribe(listBean::addSubItem);
+            listBean.removeSubItem(0);
+        });
+    }
+
+    private void generateAddData(List<InListBean.ListBean> listBeans) {
+        Observable.fromIterable(listBeans).subscribe(listBean -> {
+            mEntityList.add(listBean);
+            Observable.fromIterable(listBean.notes).subscribe(listBean::addSubItem);
+            listBean.removeSubItem(0);
+        });
     }
 
     public void responseOut(CallOutBean bean) {
