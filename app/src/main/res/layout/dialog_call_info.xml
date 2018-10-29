@@ -193,4 +193,25 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:text="详细地址：山东省青岛市市北区山东路171号"/>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flShowEmpty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/color666"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/llTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/llOne">
+
+        <TextView
+            android:id="@id/empty_retry_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="暂无订单信息"
+            android:textColor="@color/white"/>
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

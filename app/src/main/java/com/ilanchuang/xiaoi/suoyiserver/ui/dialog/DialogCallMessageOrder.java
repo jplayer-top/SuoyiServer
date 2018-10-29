@@ -51,6 +51,8 @@ public class DialogCallMessageOrder extends BaseCustomDialog {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new CallMessageAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
+        View inflate = View.inflate(getContext(), R.layout.layout_empty_view_dialog, null);
+        mAdapter.setEmptyView(inflate);
     }
 
     @Override

@@ -413,7 +413,11 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         TextView tvFLocal = findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.tvFLocal);
         tvFName.setText(family.fname);
         String addr = family.city + family.addr;
-        tvFLocal.setText(addr);
+        if ("nullnull".equals(addr) || "".equals(addr)) {
+            tvFLocal.setText("暂无家庭组信息");
+        } else {
+            tvFLocal.setText(addr);
+        }
         List<CallOutBean.RecordsBean> records = bean.records;
         findViewById(com.ilanchuang.xiaoi.suoyiserver.R.id.llTwo).setVisibility(records.size() < 2 ? View.GONE : View.VISIBLE);
         if (records.size() > 0) {

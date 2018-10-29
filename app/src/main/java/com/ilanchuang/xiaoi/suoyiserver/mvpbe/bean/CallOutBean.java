@@ -72,8 +72,8 @@ public class CallOutBean extends BaseBean implements Parcelable {
         public String fname;
         public String duid;
         public String date;
-        public String city;
-        public String addr;
+        public String city = "";
+        public String addr = "";
 
         protected FamilyBean(Parcel in) {
             fid = in.readInt();

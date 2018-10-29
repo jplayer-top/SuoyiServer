@@ -3,6 +3,7 @@ package com.ilanchuang.xiaoi.suoyiserver.ui.dialog;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,6 +67,8 @@ public class DialogCallInfo extends BaseCustomDialog {
     TextView mTvFAddrTwo;
     @BindView(R.id.llTwo)
     LinearLayout mLlTwo;
+    @BindView(R.id.flShowEmpty)
+    FrameLayout flShowEmpty;
     private Unbinder mBind;
 
     public DialogCallInfo(Context context) {
@@ -103,6 +106,7 @@ public class DialogCallInfo extends BaseCustomDialog {
         mIvCancel.setOnClickListener(v -> cancel());
         mTvFName.setText(fname);
         if (bean.list != null && bean.list.size() > 0) {
+            flShowEmpty.setVisibility(View.GONE);
             RecordUserInfoBean.ListBean bean0 = bean.list.get(0);
             mTvOne.setText(String.format(Locale.CHINA, "姓名：%s", bean0.rname));
             mIvOne.setImageResource("男".equals(bean0.sex) ? R.drawable.call_man : R.drawable.call_woman);
@@ -120,7 +124,11 @@ public class DialogCallInfo extends BaseCustomDialog {
                 mTvFIDTwo.setText(String.format(Locale.CHINA, "身份证号：%s", bean1.idcard));
                 mTvFLocalTwo.setText(String.format(Locale.CHINA, "所在城市：%s", bean1.city));
                 mTvFAddrTwo.setText(String.format(Locale.CHINA, "详细地址：%s", bean1.addr));
+            } else {
+                mLlTwo.setVisibility(View.GONE);
             }
+        } else {
+            flShowEmpty.setVisibility(View.VISIBLE);
         }
     }
 
