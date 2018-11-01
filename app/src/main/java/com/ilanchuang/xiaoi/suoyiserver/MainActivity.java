@@ -37,10 +37,12 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.rong.imkit.RongIM;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
+import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.ui.adapter.BaseViewPagerFragmentAdapter;
 import top.jplayer.baseprolibrary.utils.ActivityUtils;
 import top.jplayer.baseprolibrary.utils.KeyboardUtils;
+import top.jplayer.baseprolibrary.utils.LogUtil;
 import top.jplayer.baseprolibrary.widgets.polygon.PolygonImageView;
 
 public class MainActivity extends SuperBaseActivity {
@@ -81,6 +83,8 @@ public class MainActivity extends SuperBaseActivity {
     LinearLayout mLlLogout;
     @BindView(R.id.tvIsOnLine)
     TextView mTvIsOnLine;
+    @BindView(R.id.tvIsOtherLine)
+    TextView tvIsOtherLine;
     @BindView(R.id.ivIsOnLine)
     ImageView mIvIsOnLine;
     @BindView(R.id.llIsOnLine)
@@ -104,6 +108,18 @@ public class MainActivity extends SuperBaseActivity {
         super.initRootData(view);
         mBind = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
+        RongIM.setConnectionStatusListener(connectionStatus -> {
+            Observable.just(connectionStatus).compose(new IoMainSchedule<>()).subscribe(connectionStatus1 -> {
+                if (connectionStatus.getValue() == 3) {
+                    tvIsOtherLine.setVisibility(View.VISIBLE);
+                    mTvIsOnLine.setText("离线");
+                    RongIM.getInstance().disconnect();
+                } else {
+                    tvIsOtherLine.setVisibility(View.GONE);
+                }
+            });
+            LogUtil.str("当前状态：" + connectionStatus);
+        });
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mPresenter = new MainPresenter(this);
         mPresenter.requestTypeNum(false);
@@ -145,6 +161,7 @@ public class MainActivity extends SuperBaseActivity {
         });
         String version = "版本号：" + BuildConfig.VERSION_NAME;
         mTvVersion.setText(version);
+        mTvIsOnLine.setText("离线");
     }
 
     private void startToSearch(String in) {
@@ -174,6 +191,7 @@ public class MainActivity extends SuperBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mBind.unbind();
+        RongIM.getInstance().disconnect();
         EventBus.getDefault().unregister(this);
     }
 

@@ -5,8 +5,6 @@ import android.support.multidex.MultiDexApplication;
 
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 
-import io.rong.calllib.RongCallClient;
-import io.rong.calllib.RongCallCommon;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.push.RongPushClient;
@@ -75,7 +73,7 @@ public class SYSApplication extends MultiDexApplication {
 
                 @Override
                 public void onSuccess(String userid) {
-                    RongCallClient.getInstance().setVideoProfile(RongCallCommon.CallVideoProfile.VIDEO_PROFILE_240P);
+
                 }
 
                 @Override

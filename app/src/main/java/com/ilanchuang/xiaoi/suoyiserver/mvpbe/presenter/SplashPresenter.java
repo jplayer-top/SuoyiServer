@@ -36,7 +36,7 @@ public class SplashPresenter extends BasePresenter<SplashActivity> {
                 SharePreUtil.saveData(mIView, "login_password", password);
                 SYSApplication.uid = loginBean.uid + "";
                 SYSApplication.imToken = loginBean.imtoken;
-                connectRongIm(loginBean.imtoken);
+//                connectRongIm(loginBean.imtoken);
                 mModel.requestUserInfo().subscribe(userInfoBean -> mIView.loginGetUserInfo(userInfoBean), throwable -> {
                 });
             }

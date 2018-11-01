@@ -11,8 +11,6 @@ import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
 import top.jplayer.baseprolibrary.net.tip.LoadingImplTip;
 import top.jplayer.baseprolibrary.utils.SharePreUtil;
 
-import static com.ilanchuang.xiaoi.suoyiserver.SYSApplication.connectRongIm;
-
 /**
  * Created by Obl on 2018/10/9.
  * com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter
@@ -37,7 +35,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity> {
                 SharePreUtil.saveData(mIView, "login_password", password);
                 SYSApplication.uid = loginBean.uid + "";
                 SYSApplication.imToken = loginBean.imtoken;
-                connectRongIm(loginBean.imtoken);
+//                connectRongIm(loginBean.imtoken);
                 mModel.requestUserInfo().subscribe(userInfoBean -> mIView.loginGetUserInfo(userInfoBean), throwable -> {
                 });
             }

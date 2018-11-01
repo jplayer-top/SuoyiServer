@@ -30,6 +30,9 @@ public interface SYServer {
     @GET("serv/call/info2?")
     Observable<CallOutBean> requestIn(@Query("duid") String did);
 
+    @GET("serv/call/freebusy?")
+    Observable<BaseBean> freebusy(@Query("free") String free);
+
     @GET("serv/call/info?")
     Observable<CallOutBean> requestOut(@Query("fid") String did);
 

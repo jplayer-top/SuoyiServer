@@ -65,6 +65,10 @@ public class ServerModel extends BaseModel<SYServer> {
         return mServer.requestIn(duid).compose(new IoMainSchedule<>());
     }
 
+    public Observable<BaseBean> freebusy(String free) {
+        return mServer.freebusy(free).compose(new IoMainSchedule<>());
+    }
+
     public Observable<RecordUserInfoBean> requestRecordUserInfo(String fid) {
         return mServer.requestRecordUserInfo(fid).compose(new IoMainSchedule<>());
     }

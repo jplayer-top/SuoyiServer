@@ -35,7 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.rong.calllib.CallUserProfile;
 import io.rong.calllib.RongCallClient;
 import io.rong.calllib.RongCallCommon;
@@ -53,6 +56,7 @@ import top.jplayer.baseprolibrary.glide.GlideUtils;
 import top.jplayer.baseprolibrary.mvp.model.bean.BaseBean;
 import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 import top.jplayer.baseprolibrary.net.retrofit.NetCallBackObserver;
+import top.jplayer.baseprolibrary.utils.LogUtil;
 
 public class CustomSingleCallActivity extends BaseCallActivity implements Handler.Callback {
     private static final String TAG = "VoIPSingleActivity";
@@ -77,6 +81,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
     private ImageView mIvCallInfo;
     private ImageView mIvCallMessage;
     private Map<String, String> mStringMap;
+    private Disposable mSubscribe;
 
     @Override
     final public boolean handleMessage(Message msg) {
@@ -396,6 +401,7 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             }
         });
         mIvCallInfo.setOnClickListener(v -> new DialogCallInfo(this).setFid(fid, fname).show());
+
     }
 
     private void initCallInfo(CallOutBean bean) {
@@ -441,6 +447,20 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             onReceiveBtnClick(v);
             voiceCall = false;
         });
+        mSubscribe = Observable.interval(1, 30, TimeUnit.SECONDS).compose(new IoMainSchedule<>())
+                .subscribe(aLong -> {
+                    new ServerModel(SYServer.class).freebusy("0").subscribe(new NetCallBackObserver<BaseBean>() {
+                        @Override
+                        public void responseSuccess(BaseBean bean) {
+                            LogUtil.str(bean);
+                        }
+
+                        @Override
+                        public void responseFail(BaseBean bean) {
+
+                        }
+                    });
+                });
     }
 
     private void saveLog(CallOutBean bean, String direction) {
@@ -475,6 +495,20 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
             @Override
             public void responseSuccess(BaseBean bean) {
                 EventBus.getDefault().post(new SaveLogEvent(mStringMap.get("direction")));
+            }
+
+            @Override
+            public void responseFail(BaseBean bean) {
+
+            }
+        });
+        if (mSubscribe != null && !mSubscribe.isDisposed()) {
+            mSubscribe.dispose();
+        }
+        new ServerModel(SYServer.class).freebusy("1").subscribe(new NetCallBackObserver<BaseBean>() {
+            @Override
+            public void responseSuccess(BaseBean bean) {
+                LogUtil.str(bean);
             }
 
             @Override
@@ -898,6 +932,13 @@ public class CustomSingleCallActivity extends BaseCallActivity implements Handle
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mSubscribe != null && !mSubscribe.isDisposed()) {
+            mSubscribe.dispose();
+        }
+    }
 //    @Override
 //    public void showOnGoingNotification() {
 //        Intent intent = new Intent(getIntent().getAction());

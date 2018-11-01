@@ -16,6 +16,20 @@
 
             <include layout="@layout/layout_toolbar_common"/>
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tvIsOtherLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/redBorder"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/dimen_3dp"
+                android:paddingEnd="@dimen/dimen_15dp"
+                android:paddingStart="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_3dp"
+                android:text="账号已在其他设备登陆,当前处于离线状态~~~"
+                android:textColor="@color/white"/>
+
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
