@@ -1,6 +1,8 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe.model;
 
+import com.ilanchuang.xiaoi.suoyiserver.BuildConfig;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.AppDownLoadBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
@@ -59,6 +61,10 @@ public class ServerModel extends BaseModel<SYServer> {
 
     public Observable<CallOutBean> requestOut(String fid) {
         return mServer.requestOut(fid).compose(new IoMainSchedule<>());
+    }
+
+    public Observable<AppDownLoadBean> requestDownload() {
+        return mServer.download(BuildConfig.APPLICATION_ID).compose(new IoMainSchedule<>());
     }
 
     public Observable<CallOutBean> requestIn(String duid) {

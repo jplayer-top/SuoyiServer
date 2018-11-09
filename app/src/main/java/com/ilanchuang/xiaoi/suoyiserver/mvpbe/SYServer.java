@@ -1,5 +1,6 @@
 package com.ilanchuang.xiaoi.suoyiserver.mvpbe;
 
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.AppDownLoadBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallMessageBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.CallOutBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.HealthDataBean;
@@ -74,4 +75,7 @@ public interface SYServer {
 
     @GET("serv/call/detail?")
     Observable<CallMessageBean> requestUserMessage(@Query("fid") String fid);
+
+    @GET("/appver")
+    Observable<AppDownLoadBean> download(@Query("pkg_name") String pkg_name);
 }

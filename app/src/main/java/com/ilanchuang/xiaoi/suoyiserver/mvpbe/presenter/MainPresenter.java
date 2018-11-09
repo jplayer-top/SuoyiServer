@@ -2,6 +2,7 @@ package com.ilanchuang.xiaoi.suoyiserver.mvpbe.presenter;
 
 import com.ilanchuang.xiaoi.suoyiserver.MainActivity;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.SYServer;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.AppDownLoadBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.model.ServerModel;
 
@@ -28,16 +29,29 @@ public class MainPresenter extends BasePresenter<MainActivity> {
     }
 
 
-
     public void requestTypeNum(boolean isFlush) {
         mModel.requestTypeNum().subscribe(new NetCallBackObserver<TypeNumBean>() {
             @Override
             public void responseSuccess(TypeNumBean typeNumBean) {
-                mIView.responseTypeNum(typeNumBean,isFlush);
+                mIView.responseTypeNum(typeNumBean, isFlush);
             }
 
             @Override
             public void responseFail(TypeNumBean typeNumBean) {
+
+            }
+        });
+    }
+
+    public void requestUpdate() {
+        mModel.requestDownload().subscribe(new NetCallBackObserver<AppDownLoadBean>() {
+            @Override
+            public void responseSuccess(AppDownLoadBean appDownLoadBean) {
+                mIView.reponseDownload(appDownLoadBean);
+            }
+
+            @Override
+            public void responseFail(AppDownLoadBean appDownLoadBean) {
 
             }
         });

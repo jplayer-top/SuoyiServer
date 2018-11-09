@@ -1,6 +1,10 @@
 package com.ilanchuang.xiaoi.suoyiserver;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.AppDownLoadBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.bean.TypeNumBean;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.EditSearchEvent;
 import com.ilanchuang.xiaoi.suoyiserver.mvpbe.event.SaveLogEvent;
@@ -25,6 +30,8 @@ import com.ilanchuang.xiaoi.suoyiserver.ui.activity.SearchActivity;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.LinkListFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayInFragment;
 import com.ilanchuang.xiaoi.suoyiserver.ui.fragment.TodayOutFragment;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,9 +44,11 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.rong.imkit.RongIM;
 import top.jplayer.baseprolibrary.glide.GlideUtils;
+import top.jplayer.baseprolibrary.net.download.DownloadByManager;
 import top.jplayer.baseprolibrary.net.retrofit.IoMainSchedule;
 import top.jplayer.baseprolibrary.ui.activity.SuperBaseActivity;
 import top.jplayer.baseprolibrary.ui.adapter.BaseViewPagerFragmentAdapter;
+import top.jplayer.baseprolibrary.ui.dialog.DialogLogout;
 import top.jplayer.baseprolibrary.utils.ActivityUtils;
 import top.jplayer.baseprolibrary.utils.KeyboardUtils;
 import top.jplayer.baseprolibrary.utils.LogUtil;
@@ -97,6 +106,7 @@ public class MainActivity extends SuperBaseActivity {
     LinearLayout mLlShowOnline;
     private Unbinder mBind;
     private MainPresenter mPresenter;
+    private DownloadByManager mDownloadByManager;
 
     @Override
     protected int initRootLayout() {
@@ -107,6 +117,12 @@ public class MainActivity extends SuperBaseActivity {
     public void initRootData(View view) {
         super.initRootData(view);
         mBind = ButterKnife.bind(this, view);
+        mDownloadByManager = new DownloadByManager(this) {
+            @Override
+            public void onProgressListener(long progress, long total) {
+//                ToastUtils.init().showQuickToast(progress + "/" + total);
+            }
+        };
         EventBus.getDefault().register(this);
         RongIM.setConnectionStatusListener(connectionStatus -> {
             Observable.just(connectionStatus).compose(new IoMainSchedule<>()).subscribe(connectionStatus1 -> {
@@ -123,6 +139,7 @@ public class MainActivity extends SuperBaseActivity {
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mPresenter = new MainPresenter(this);
         mPresenter.requestTypeNum(false);
+        mPresenter.requestUpdate();
         mIvToolLeft.setImageResource(R.drawable.main_user);
         mIvToolLeft.setOnClickListener(v -> mDrawer.openDrawer(Gravity.START));
         mEditSearch.setOnEditorActionListener((v, actionId, event) -> {
@@ -223,4 +240,58 @@ public class MainActivity extends SuperBaseActivity {
         ActivityUtils.init().start(this, LoginActivity.class);
         Observable.timer(1, TimeUnit.SECONDS).subscribe(aLong -> finish());
     }
+
+    private AppDownLoadBean.VerBean mVerBean;
+
+    public void reponseDownload(AppDownLoadBean response) {
+        if (response != null && response.ver != null && response.ver.build_num != null && Integer.parseInt
+                (response.ver.build_num) > BuildConfig.VERSION_CODE) {
+            mVerBean = response.ver;
+            DialogLogout dialog = new DialogLogout(this).setTitle("更新提示").setSubTitle(mVerBean.description);
+            dialog.show(R.id.btnSure, view -> {
+                dialog.dismiss();
+                AndPermission.with(this)
+                        .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                        .onGranted(permissions -> {
+                            downloadByManager();
+                        })
+                        .onDenied(permissions -> AndPermission.hasAlwaysDeniedPermission(mActivity, permissions))
+                        .start();
+            });
+        }
+    }
+
+    private void downloadByManager() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !getPackageManager()
+                .canRequestPackageInstalls()) {// 8.0  安装问题 是否允许外部安装
+            Uri packageURI = Uri.parse("package:" + getPackageName());
+            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                    packageURI);
+            startActivityForResult(intent, 10000);
+        } else {
+            updateVersion(mVerBean);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mDownloadByManager != null)
+            mDownloadByManager.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDownloadByManager != null)
+            mDownloadByManager.onPause();
+    }
+
+    private void updateVersion(AppDownLoadBean.VerBean verBean) {
+        int newCode = Integer.parseInt(verBean.build_num);
+        mDownloadByManager.bind(newCode, verBean.description, verBean.url)
+                .download().listener((currentByte, totalByte) -> {
+        });
+    }
+
 }

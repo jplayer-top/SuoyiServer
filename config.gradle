@@ -17,7 +17,7 @@ ext {
             rxAndroid               : "2.0.1"
     ]
     url = [
-            "debug"  : "https://dev.xiaoyi99.com/v2/",
+            "debug"  : "http://192.168.0.168:8080/v2/",
             "release": "https://app.xiaoyi99.com/v2/",
     ]
     key_rong = [

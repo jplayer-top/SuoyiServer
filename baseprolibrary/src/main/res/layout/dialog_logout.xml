@@ -20,7 +20,9 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_25dp"
             android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
             android:text="确认退出吗"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold"
@@ -30,7 +32,9 @@
             android:id="@+id/tvSubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_25dp"
             android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
             android:text="退出将无法接收到新消息"
             android:textSize="13sp"
             app:layout_constraintTop_toTopOf="@id/tvTitle"/>
@@ -65,5 +69,6 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_launcher_round"/>
+        android:src="@drawable/ic_launcher_round"
+        android:visibility="invisible"/>
 </android.support.v7.widget.CardView>
