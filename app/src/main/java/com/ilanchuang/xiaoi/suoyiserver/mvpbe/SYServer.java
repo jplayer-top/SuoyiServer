@@ -76,6 +76,6 @@ public interface SYServer {
     @GET("serv/call/detail?")
     Observable<CallMessageBean> requestUserMessage(@Query("fid") String fid);
 
-    @GET("/appver")
+    @GET("appver")
     Observable<AppDownLoadBean> download(@Query("pkg_name") String pkg_name);
 }
